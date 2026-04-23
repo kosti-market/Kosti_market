@@ -3,168 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOSTI MARKET | SUBSCRIPTIONS 2026</title>
+    <title>KOSTI MARKET | NEXT-GEN 2026 ULTIMATE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Outfit:wght@900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #2563eb; --glass: rgba(255, 255, 255, 0.85); }
-        body { font-family: 'Cairo', sans-serif; background: #f0f4f9; color: #1e293b; }
-        .glass-panel { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); border-radius: 2.5rem; }
-        .section-view { display: none; opacity: 0; transform: scale(0.98); transition: 0.4s; }
-        .section-view.active { display: block; opacity: 1; transform: scale(1); }
-        .tier-card { transition: 0.3s; cursor: pointer; border: 2px solid transparent; }
-        .tier-card.selected { border-color: #2563eb; background: #eff6ff; }
+        :root { --p: #1d4ed8; --glass: rgba(255, 255, 255, 0.8); }
+        body { font-family: 'Cairo', sans-serif; background: #f1f5f9; background: radial-gradient(at top left, #e0e7ff, #f1f5f9, #fae8ff); color: #1e293b; overflow-x: hidden; }
+        .glass-panel { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.4); border-radius: 2.5rem; }
+        
+        /* تأثيرات الأقسام المستقلة */
+        .section-view { display: none; opacity: 0; transform: translateX(20px); transition: 0.5s; }
+        .section-view.active { display: block; opacity: 1; transform: translateX(0); }
+        
+        /* كروت Bento */
+        .bento-card { transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1); cursor: pointer; position: relative; overflow: hidden; }
+        .bento-card:hover { transform: scale(1.02) translateY(-8px); shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
+        
+        .nav-item.active { color: #1d4ed8; border-bottom: 3px solid #1d4ed8; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .promo-card { background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%); }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        .floating { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
 <body class="pb-32">
 
-    <header class="sticky top-4 z-[500] container mx-auto px-4">
-        <nav class="glass-panel p-3 flex justify-between items-center shadow-xl">
-            <h1 class="text-2xl font-[900] text-blue-600 px-4" onclick="showSection('all')">KOSTI.M</h1>
-            <div id="user-badge" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-2xl text-xs font-black">
-                باقة: مبتدئ (10% عمولة)
+    <header class="glass-nav sticky top-0 z-[100] bg-white/70 backdrop-blur-xl border-b shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-3xl font-black text-blue-900 cursor-pointer animate__animated animate__fadeInLeft" onclick="showSection('all')">KOSTI<span class="text-blue-500">MARKET</span></h1>
+            
+            <div class="flex gap-4 w-full md:w-auto animate__animated animate__fadeInRight">
+                <div class="relative flex-1">
+                    <input type="text" placeholder="ابحث في المتجر..." class="w-full bg-gray-100 border-none rounded-2xl py-2 px-10 focus:ring-2 focus:ring-blue-500">
+                    <span class="absolute right-3 top-2">🔍</span>
+                </div>
+                <button onclick="showSection('vendor')" class="bg-blue-600 text-white px-6 py-2 rounded-2xl font-bold shadow-lg hover:bg-blue-700 transition">لوحة التاجر</button>
             </div>
+        </div>
+
+        <nav class="bg-white px-4 flex gap-6 overflow-x-auto no-scrollbar border-t text-sm font-bold shadow-inner">
+            <button onclick="showSection('all')" class="nav-item active py-3 whitespace-nowrap">عرض الكل</button>
+            <button onclick="showSection('phones')" class="nav-item py-3 whitespace-nowrap">📱 الهواتف</button>
+            <button onclick="showSection('clothes')" class="nav-item py-3 whitespace-nowrap">👕 الملابس</button>
+            <button onclick="showSection('accessories')" class="nav-item py-3 whitespace-nowrap">⌚ الإكسسوارات</button>
+            <button onclick="showSection('cars')" class="nav-item py-3 whitespace-nowrap">🚗 السيارات</button>
+            <button onclick="showSection('electric')" class="nav-item py-3 whitespace-nowrap">💡 أدوات كهربائية</button>
         </nav>
     </header>
 
     <main class="container mx-auto px-4 mt-8">
         
-        <div id="section-all" class="section-view active">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-all">
+        <div id="promo-area" class="mb-12 animate__animated animate__fadeInDown">
+            <div class="promo-card rounded-[3rem] p-10 text-white relative overflow-hidden shadow-xl min-h-[250px] flex items-center">
+                <div class="z-10 relative">
+                    <span class="bg-yellow-500 text-blue-900 text-[10px] px-3 py-1 rounded-full font-black uppercase">إعلان ممول</span>
+                    <h2 class="text-4xl md:text-5xl font-black mt-3 leading-tight text-white">عروض العيد وصلت!</h2>
+                    <p class="text-blue-100 mt-2 font-bold max-w-lg">اشترِ قطعة واحصل على الثانية بنصف السعر في قسم الملابس. العرض لفترة محدودة.</p>
                 </div>
+                <img src="https://images.unsplash.com/photo-1607083206968-13611e3d76db?w=500" class="absolute left-0 bottom-0 w-80 opacity-20 pointer-events-none floating">
+            </div>
+        </div>
+
+        <div id="section-all" class="section-view active">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">💎 وصل حديثاً (كل الأقسام)</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-all"></div>
+        </div>
+
+        <div id="section-phones" class="section-view">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">📱 قسم الهواتف</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-phones"></div>
+        </div>
+
+        <div id="section-clothes" class="section-view">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">👕 قسم الملابس</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-clothes"></div>
+        </div>
+
+        <div id="section-accessories" class="section-view">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">⌚ الإكسسوارات</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-accessories"></div>
+        </div>
+
+        <div id="section-cars" class="section-view">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">🚗 السيارات</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="grid-cars"></div>
+        </div>
+
+        <div id="section-electric" class="section-view">
+            <h3 class="text-2xl font-black mb-8 border-r-4 border-blue-600 pr-4">💡 الأدوات الكهربائية</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-electric"></div>
         </div>
 
         <div id="section-vendor" class="section-view">
-            <div class="max-w-4xl mx-auto space-y-8">
-                
-                <div class="glass-panel p-8 shadow-lg">
-                    <h2 class="text-xl font-black mb-6 flex items-center gap-2">💎 اختر باقة اشتراكك</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div onclick="setTier('free', 10, 'مبتدئ')" id="tier-free" class="tier-card glass-panel p-5 text-center selected">
-                            <span class="text-2xl">🌱</span>
-                            <h4 class="font-black mt-2">مبتدئ</h4>
-                            <p class="text-[10px] text-gray-500">عمولة 10%</p>
-                            <p class="font-bold text-blue-600 mt-2 italic">مجاني</p>
-                        </div>
-                        <div onclick="setTier('pro', 5, 'نشط')" id="tier-pro" class="tier-card glass-panel p-5 text-center">
-                            <span class="text-2xl">🔥</span>
-                            <h4 class="font-black mt-2">نشط</h4>
-                            <p class="text-[10px] text-gray-500">عمولة 5%</p>
-                            <p class="font-bold text-blue-600 mt-2 italic">5,000 ج.س / شهر</p>
-                        </div>
-                        <div onclick="setTier('vip', 2, 'نجم VIP')" id="tier-vip" class="tier-card glass-panel p-5 text-center">
-                            <span class="text-2xl">👑</span>
-                            <h4 class="font-black mt-2">نجم VIP</h4>
-                            <p class="text-[10px] text-gray-500">عمولة 2% فقط</p>
-                            <p class="font-bold text-blue-600 mt-2 italic">15,000 ج.س / شهر</p>
-                        </div>
-                    </div>
+            <div class="max-w-4xl mx-auto space-y-8 p-6 bg-white rounded-3xl shadow-lg border">
+                <h3 class="text-2xl font-black mb-6 flex items-center gap-2">👨‍💼 لوحة تحكم التاجر</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" id="p-name" placeholder="اسم المنتج" class="p-4 bg-gray-50 rounded-2xl border">
+                    <input type="number" id="p-price" placeholder="السعر" class="p-4 bg-gray-50 rounded-2xl border">
                 </div>
-
-                <div class="glass-panel p-8 shadow-2xl">
-                    <h2 class="text-2xl font-black mb-6">📦 إضافة منتج جديد</h2>
-                    <div class="space-y-4">
-                        <input type="text" id="p-name" placeholder="اسم المنتج" class="w-full p-4 glass-panel border-none outline-none ring-1 ring-blue-100">
-                        <div class="flex gap-4">
-                            <input type="number" id="p-price" oninput="calcCommission()" placeholder="السعر" class="w-1/2 p-4 glass-panel border-none outline-none ring-1 ring-blue-100">
-                            <div class="w-1/2 p-4 glass-panel bg-blue-50 flex items-center justify-between">
-                                <span class="text-[10px] font-black opacity-50">صافي ربحك:</span>
-                                <span id="net-profit" class="font-black text-green-600">0</span>
-                            </div>
-                        </div>
-                        <label class="w-full h-32 border-2 border-dashed border-blue-300 rounded-[2rem] flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition">
-                            <span class="text-3xl">📸</span>
-                            <span class="font-black text-blue-600 text-xs mt-2">رفع صورة المنتج</span>
-                            <input type="file" id="p-file" accept="image/*" class="hidden">
-                        </label>
-                        <button onclick="publishProduct()" class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-black text-xl shadow-2xl">نشر الآن</button>
-                    </div>
-                </div>
+                <button onclick="saveProduct()" class="w-full bg-blue-900 text-white py-4 rounded-2xl font-black">نشر المنتج</button>
             </div>
         </div>
     </main>
 
-    <div class="fixed bottom-6 inset-x-0 mx-auto w-[92%] max-w-lg glass-panel p-3 flex justify-around items-center z-[1000] shadow-2xl">
-        <button onclick="showSection('all')" class="flex flex-col items-center"><span>🏠</span><span class="text-[9px] font-bold">الرئيسية</span></button>
-        <button onclick="showSection('vendor')" class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl shadow-xl -mt-10 border-4 border-white">+</button>
-        <button onclick="alert('قريباً: محفظة التاجر')" class="flex flex-col items-center"><span>💰</span><span class="text-[9px] font-bold">أرباحي</span></button>
+    <div id="action-bar" class="fixed bottom-6 inset-x-0 mx-auto w-[90%] md:w-[500px] h-20 glass-panel border border-white/20 shadow-2xl z-[150] flex items-center justify-between px-8 animate__animated animate__fadeInUp">
+        <div>
+            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">إجمالي السلة</p>
+            <p id="total-price" class="text-2xl font-black text-blue-900">0 ج.س</p>
+        </div>
+        <button onclick="checkout()" class="bg-green-500 text-white px-10 py-3 rounded-2xl font-black shadow-lg shadow-green-200">اطلب الآن (واتساب)</button>
     </div>
 
     <script>
-        let db = [];
-        let currentTier = { name: 'مبتدئ', commission: 10 };
+        // داتابيس عملاقة افتراضية (50+ منتج) مولدة بالذكاء الاصطناعي
+        let productsDb = [];
 
-        function showSection(id) {
+        const categories = {
+            phones: { name: "الهواتف", basePrice: 30000, img: "https://m.media-amazon.com/images/I/71ZOtNdaZCL._AC_SL1500_.jpg", brands: ["آيفون", "سامسونج", "شاومي"] },
+            clothes: { name: "الملابس", basePrice: 2000, img: "https://m.media-amazon.com/images/I/81Pj6pYJcFL._AC_UX679_.jpg", brands: ["نايك", "بولو", "زارا"] },
+            accessories: { name: "الإكسسوارات", basePrice: 500, img: "https://m.media-amazon.com/images/I/71N1o8QyqHL._AC_SL1500_.jpg", brands: ["رولكس", "ساعة ذكية", "نظارة"] },
+            cars: { name: "السيارات", basePrice: 5000000, img: "https://images.unsplash.com/photo-1594502184342-2e12f877aa73?w=500", brands: ["تويوتا", "هيونداي", "كيا"] },
+            electric: { name: "الأدوات الكهربائية", basePrice: 15000, img: "https://m.media-amazon.com/images/I/718y6K-95vL._AC_SL1500_.jpg", brands: ["إل جي", "سامسونج", "توشيبا"] }
+        };
+
+        // دالة توليد الداتابيس بالذكاء الاصطناعي
+        function generateDb() {
+            Object.keys(categories).forEach(catKey => {
+                const catInfo = categories[catKey];
+                for(let i=1; i<=10; i++) {
+                    const brand = catInfo.brands[Math.floor(Math.random()*catInfo.brands.length)];
+                    const product = {
+                        id: productsDb.length + 1,
+                        name: `${brand} - نسخة مميزة ${i}`,
+                        price: catInfo.basePrice + (i * 100),
+                        cat: catKey,
+                        img: catInfo.img
+                    };
+                    productsDb.push(product);
+                }
+            });
+        }
+        generateDb(); // تشغيل التوليد الأولي
+
+        let cart = [];
+        const commission = 1.10; // 10% زيادة
+
+        function showSection(sectionId) {
+            // تحديث الواجهة
             document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-            document.getElementById(`section-${id}`).classList.add('active');
-            renderUI();
+            const target = document.getElementById(`section-${sectionId}`);
+            target.classList.add('active');
+            
+            // تحديث أزرار التنقل
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(event && event.target.tagName === 'BUTTON') event.target.classList.add('active');
+
+            // إخفاء الـ Hero في صفحة التاجر
+            document.getElementById('promo-area').style.display = (sectionId === 'vendor') ? 'none' : 'block';
+
+            renderProducts(sectionId);
         }
 
-        // نظام تغيير الباقة وتحديث العمولة
-        function setTier(id, comm, label) {
-            currentTier = { name: label, commission: comm };
-            
-            // تحديث الشكل
-            document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById(`tier-${id}`).classList.add('selected');
-            
-            // تحديث الشارة في الأعلى
-            document.getElementById('user-badge').innerText = `باقة: ${label} (${comm}% عمولة)`;
-            
-            // إعادة الحساب إذا كان هناك سعر مكتوب
-            calcCommission();
-        }
+        function renderProducts(sectionId) {
+            const grids = ['all', 'phones', 'clothes', 'accessories', 'cars', 'electric'];
+            grids.forEach(cat => {
+                const container = document.getElementById(`grid-${cat}`);
+                if(!container) return;
+                
+                const items = cat === 'all' ? productsDb : productsDb.filter(p => p.cat === cat);
+                container.innerHTML = '';
+                
+                // أنيميشن عند العرض
+                container.classList.add('animate__animated', 'animate__fadeInUp');
+                setTimeout(() => container.classList.remove('animate__animated', 'animate__fadeInUp'), 1000);
 
-        // حساب الربح الصافي تلقائياً بناءً على العمولة
-        function calcCommission() {
-            const price = document.getElementById('p-price').value || 0;
-            const commissionAmount = (price * currentTier.commission) / 100;
-            const net = price - commissionAmount;
-            document.getElementById('net-profit').innerText = net.toLocaleString() + " ج.س";
-        }
-
-        function publishProduct() {
-            const name = document.getElementById('p-name').value;
-            const price = document.getElementById('p-price').value;
-            const fileInput = document.getElementById('p-file');
-
-            if (name && price && fileInput.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    db.unshift({
-                        id: Date.now(),
-                        name: name,
-                        price: price,
-                        img: e.target.result,
-                        tier: currentTier.name // تخزين نوع الباقة وقت النشر
-                    });
-                    alert(`تم النشر! عمولة النظام: ${(price * currentTier.commission / 100)} ج.س`);
-                    showSection('all');
-                };
-                reader.readAsDataURL(fileInput.files[0]);
-            } else {
-                alert("اكمل البيانات أولاً");
-            }
-        }
-
-        function renderUI() {
-            const grid = document.getElementById('grid-all');
-            grid.innerHTML = db.length ? '' : '<div class="col-span-full text-center py-20 opacity-20 font-black">لا توجد معروضات حالياً..</div>';
-            
-            db.forEach(item => {
-                grid.innerHTML += `
-                    <div class="glass-panel p-4 flex flex-col group relative">
-                        <span class="absolute top-2 right-2 bg-white/80 text-[8px] font-bold px-2 py-1 rounded-full z-10">${item.tier}</span>
-                        <div class="rounded-[2rem] overflow-hidden h-40 mb-3">
-                            <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                        </div>
-                        <h4 class="font-black text-sm px-1 truncate">${item.name}</h4>
-                        <p class="text-blue-600 font-black text-lg px-1">${parseInt(item.price).toLocaleString()} <small class="text-[8px]">ج.س</small></p>
-                    </div>`;
+                items.forEach(item => {
+                    const finalPrice = Math.round(item.price * commission);
+                    container.innerHTML += `
+                        <div class="bento-card glass-panel rounded-[2rem] p-4 flex flex-col group transition animate__animated animate__zoomIn">
+                            <div class="rounded-[1.5rem] overflow-hidden h-40 mb-3 relative">
+                                <img src="${item.img}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-125">
+                            </div>
+                            <h4 class="font-bold text-gray-800 text-sm truncate px-1">${item.name}</h4>
+                            <div class="flex justify-between items-center mt-3 px-1">
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] text-gray-400 line-through">${item.price.toLocaleString()}</span>
+                                    <span class="text-lg font-black text-blue-700">${finalPrice.toLocaleString()} <small class="text-[10px]">ج.س</small></span>
+                                </div>
+                                <button onclick="addToCart(${item.price})" class="bg-blue-900 text-white w-9 h-9 rounded-xl active:scale-90 transition">+</button>
+                            </div>
+                        </div>`;
+                });
             });
         }
 
-        renderUI();
+        function addToCart(p) {
+            cart.push(p);
+            let total = 0;
+            cart.forEach(x => total += Math.round(x * commission));
+            document.getElementById('total-price').innerText = total.toLocaleString() + " ج.س";
+        }
+
+        function checkout() {
+            if(cart.length === 0) return alert("السلة فارغة!");
+            let msg = "*طلب جديد من كوستي ماركت الأقسام*\n\n";
+            let total = 0;
+            cart.forEach((p, i) => {
+                const f = Math.round(p * commission);
+                msg += `${i+1}- منتج (${f.toLocaleString()} ج.س)\n`;
+                total += f;
+            });
+            msg += `\n💰 الإجمالي: ${total.toLocaleString()} ج.س`;
+            window.open(`https://wa.me/249123456789?text=${encodeURIComponent(msg)}`);
+        }
+
+        // تشغيل العرض الأول
+        renderProducts('all');
     </script>
 </body>
 </html>
