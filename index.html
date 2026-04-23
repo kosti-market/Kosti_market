@@ -3,156 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Nasr Luxury Leather | فخامة كوستي</title>
+    <title>AL-NASR | الأناقة اليدوية</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;600&family=Noto+Kufi+Arabic:wght@300;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #fafafa; }
-        .luxury-font { font-family: 'Amiri', serif; }
-        .gold-text { color: #c5a059; }
-        .gold-bg { background-color: #c5a059; }
+        :root { --accent: #D4AF37; }
+        body { font-family: 'Noto Kufi Arabic', sans-serif; background-color: #fcfcfc; scroll-behavior: smooth; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .hero-bg { background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f3f3f3 100%); }
+        .product-card { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .product-card:hover { transform: translateY(-12px); }
         .admin-panel { display: none; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .save-btn { background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); }
+        .fade-in { animation: fadeIn 1.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="text-gray-900">
 
-    <header class="bg-white border-b py-8 px-4 text-center">
-        <h1 class="luxury-font text-4xl mb-2">AL-NASR LEATHER</h1>
-        <p class="text-xs tracking-widest text-gray-500 uppercase">صناعة يدوية فاخرة - كوستي</p>
-        <button onclick="toggleAdmin()" class="text-[10px] text-gray-300 mt-4">تسجيل دخول الإدارة</button>
-    </header>
+    <nav class="glass fixed top-0 w-full z-50 px-8 py-5 flex justify-between items-center border-b border-white/20">
+        <div class="text-2xl font-bold tracking-tighter" style="font-family: 'Plus Jakarta Sans';">AL-NASR</div>
+        <div class="flex gap-6 text-xs font-bold uppercase tracking-widest">
+            <a href="#collection" class="hover:text-accent transition">المجموعة</a>
+            <a href="https://wa.me/249900623733" class="hover:text-accent transition">واتساب</a>
+        </div>
+    </nav>
 
-    <section id="adminPanel" class="admin-panel bg-gray-100 p-6 border-b">
-        <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-sm">
-            <h2 class="text-xl font-bold mb-4">إضافة منتج جديد (النصر مربع 8)</h2>
-            <input type="text" id="pName" placeholder="اسم الشنطة" class="w-full border p-2 mb-3 rounded">
-            <input type="number" id="pPrice" placeholder="السعر (SDG)" class="w-full border p-2 mb-3 rounded">
-            <select id="pCategory" class="w-full border p-2 mb-3 rounded">
-                <option value="شنط يد">شنط يد</option>
-                <option value="محافظ">محافظ</option>
-                <option value="أطقم">أطقم فاخرة</option>
-            </select>
-            <textarea id="pDesc" placeholder="وصف المنتج" class="w-full border p-2 mb-3 rounded"></textarea>
-            <label class="block mb-2 text-sm text-gray-600">اختر صور المنتج (يمكن اختيار أكثر من صورة من الموبايل):</label>
-            <input type="file" id="pFiles" multiple accept="image/*" class="w-full mb-4">
-            <button onclick="uploadProduct()" id="uploadBtn" class="gold-bg text-white px-6 py-2 rounded w-full">نشر المنتج الآن</button>
+    <section class="hero-bg min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20">
+        <div class="fade-in">
+            <span class="text-accent text-[10px] font-bold tracking-[0.5em] mb-6 block uppercase">Handcrafted in Kosti</span>
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 leading-[1.1] tracking-tighter">الفخامة في <br><span class="text-gray-400 font-light italic">أبسط تفاصيلها</span></h1>
+            <p class="max-w-xl text-gray-500 mb-12 text-lg font-light leading-relaxed">من ورشتنا في النصر مربع 8، نقدم لكِ قطعاً جلدية تُصنع مرة واحدة لتبقى معكِ للأبد.</p>
+            <a href="#collection" class="inline-block border-b-2 border-black pb-2 text-sm font-bold hover:text-accent hover:border-accent transition">استكشف المجموعة المختارة</a>
         </div>
     </section>
 
-    <div id="loginModal" class="modal flex items-center justify-center">
-        <div class="bg-white p-8 rounded-lg w-80">
-            <h3 class="font-bold mb-4">دخول الإدارة</h3>
-            <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full border p-2 mb-3 rounded">
-            <input type="password" id="password" placeholder="كلمة المرور" class="w-full border p-2 mb-4 rounded">
-            <button onclick="handleLogin()" class="bg-black text-white w-full py-2 rounded">دخول</button>
-            <button onclick="toggleAdmin()" class="text-gray-400 text-sm mt-4 block w-full text-center">إلغاء</button>
+    <section id="collection" class="py-32 max-w-7xl mx-auto px-8">
+        <div class="mb-20">
+            <h2 class="text-4xl font-bold mb-4">المجموعة الحالية</h2>
+            <div class="w-20 h-1 bg-accent"></div>
+        </div>
+        <div id="productsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+            </div>
+    </section>
+
+    <section id="adminPanel" class="admin-panel py-24 bg-black text-white">
+        <div class="max-w-2xl mx-auto px-6">
+            <h2 class="text-3xl font-bold mb-10 text-center">إضافة قطعة جديدة للمتجر</h2>
+            <div class="space-y-6">
+                <input type="text" id="pName" placeholder="اسم المنتج" class="w-full bg-white/10 border-none p-5 rounded-2xl focus:ring-1 focus:ring-accent text-white">
+                <input type="number" id="pPrice" placeholder="السعر (SDG)" class="w-full bg-white/10 border-none p-5 rounded-2xl focus:ring-1 focus:ring-accent text-white">
+                <textarea id="pDesc" placeholder="تفاصيل القطعة..." class="w-full bg-white/10 border-none p-5 rounded-2xl h-40 text-white"></textarea>
+                <div class="border-2 border-dashed border-white/20 p-8 rounded-2xl text-center">
+                    <input type="file" id="pFiles" multiple class="hidden">
+                    <label for="pFiles" class="cursor-pointer text-sm text-gray-400 hover:text-white transition">اضغط هنا لاختيار صور الشنطة من الموبايل</label>
+                </div>
+                <button onclick="uploadProduct()" id="uploadBtn" class="w-full py-5 bg-white text-black rounded-2xl font-bold hover:bg-accent hover:text-white transition">نشر في المتجر</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 border-t border-gray-100 px-8 text-center">
+        <p class="text-xs text-gray-400 tracking-widest uppercase">© 2026 AL-NASR Luxury Leather - Kosti</p>
+        <button onclick="showLogin()" class="mt-12 text-[10px] text-gray-200 hover:text-gray-400 transition">بوابة الوصول</button>
+    </footer>
+
+    <div id="loginModal" class="fixed inset-0 bg-white/90 z-[100] hidden items-center justify-center p-6 backdrop-blur-xl">
+        <div class="w-full max-w-sm">
+            <h3 class="text-3xl font-bold mb-8 text-center tracking-tighter">التحقق من الهوية</h3>
+            <input type="email" id="email" placeholder="البريد الإلكتروني" class="w-full border-b border-black py-4 mb-6 outline-none bg-transparent">
+            <input type="password" id="password" placeholder="كلمة المرور" class="w-full border-b border-black py-4 mb-10 outline-none bg-transparent">
+            <button onclick="handleLogin()" class="w-full py-4 bg-black text-white rounded-full font-bold">دخول</button>
+            <button onclick="hideLogin()" class="w-full mt-6 text-xs text-gray-400 uppercase tracking-widest">إغلاق</button>
         </div>
     </div>
 
-    <section class="py-16 px-4 text-center">
-        <h2 class="luxury-font text-3xl mb-4">فخامة تُصنع باليد.. من قلب كوستي إليكِ</h2>
-        <p class="max-w-xl mx-auto text-gray-600 leading-relaxed">في ورشتنا بالنصر مربع 8، نحول الجلد الطبيعي إلى قطع فنية تروي قصة الأصالة والدقة.</p>
-    </section>
-
-    <main id="productsGrid" class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 pb-20">
-        </main>
-
-    <a href="https://wa.me/249900623733" target="_blank" class="fixed bottom-6 left-6 bg-[#25d366] text-white p-4 rounded-full shadow-lg flex items-center gap-2 hover:scale-105 transition">
-        <span class="font-bold">اطلب الآن</span>
-        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.587-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.747-2.874-2.512-2.96-2.626-.088-.113-.716-.953-.716-1.819 0-.866.454-1.292.614-1.468.16-.176.346-.22.462-.22s.231.001.332.005c.106.005.249-.04.39.299.144.344.491 1.196.534 1.282.043.088.072.19.014.306-.057.117-.087.19-.173.289-.086.1-.181.223-.259.302-.086.088-.176.185-.077.355.1.17.444.733.951 1.185.655.584 1.207.765 1.378.85s.273.064.373-.049c.1-.113.432-.503.547-.674.117-.171.232-.144.39-.086.158.058 1.001.472 1.173.558.173.086.289.129.332.201.042.072.042.417-.102.822z"/></svg>
-    </a>
-
     <script>
-        // ربط Supabase
         const SUPABASE_URL = 'https://bxbglomvulnzehruubdh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4Ymdsb212dWxuemVocnV1YmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5Mzg5MDYsImV4cCI6MjA5MjUxNDkwNn0.rqIZHvP47QugH9vG0LW8OkkmAVYEzhOwv-VUKJuEqOY';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // تبديل ظهور لوحة الإدارة
-        function toggleAdmin() {
-            const modal = document.getElementById('loginModal');
-            modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
-        }
+        // منتجات ترويجية أولية (يمكن للمدير حذفها لاحقاً من قاعدة البيانات)
+        const promoData = [
+            { id: 1, name: "حقيبة النصر كلاسيك", price: "45,000", images: ["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?q=80&w=800"] },
+            { id: 2, name: "محفظة الجلد الفاخرة", price: "12,500", images: ["https://images.unsplash.com/photo-1627123424574-724758594e93?q=80&w=800"] }
+        ];
 
-        // تسجيل الدخول
+        function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
+        function hideLogin() { document.getElementById('loginModal').style.display = 'none'; }
+
         async function handleLogin() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
-            if (error) alert("بيانات الدخول غير صحيحة");
+            const { error } = await _supabase.auth.signInWithPassword({ email, password });
+            if (error) alert("البيانات غير صحيحة");
             else {
-                alert("تم الدخول بنجاح");
-                document.getElementById('loginModal').style.display = 'none';
+                hideLogin();
                 document.getElementById('adminPanel').style.display = 'block';
-                loadProducts();
+                window.scrollTo({ top: document.getElementById('adminPanel').offsetTop, behavior: 'smooth' });
             }
         }
 
-        // رفع المنتج (صور متعددة)
         async function uploadProduct() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            const desc = document.getElementById('pDesc').value;
-            const cat = document.getElementById('pCategory').value;
-            const files = document.getElementById('pFiles').files;
             const btn = document.getElementById('uploadBtn');
-
-            if(!name || files.length === 0) return alert("يرجى إكمال البيانات");
-            btn.innerText = "جاري الرفع...";
-
-            const imageUrls = [];
-            for (let file of files) {
-                const fName = `${Date.now()}_${file.name}`;
-                const { data, error } = await _supabase.storage.from('product-images').upload(fName, file);
-                if (data) {
+            const files = document.getElementById('pFiles').files;
+            btn.innerText = "جاري الحفظ بنظام 2026...";
+            
+            try {
+                let imageUrls = [];
+                for (let file of files) {
+                    const fName = `${Date.now()}_${file.name}`;
+                    const { data, error } = await _supabase.storage.from('product-images').upload(fName, file);
+                    if (error) throw error;
                     const { data: urlData } = _supabase.storage.from('product-images').getPublicUrl(fName);
                     imageUrls.push(urlData.publicUrl);
                 }
-            }
 
-            const { error: dbError } = await _supabase.from('products').insert([{ 
-                name, price, description: desc, category: cat, images: imageUrls 
-            }]);
-
-            if (dbError) alert("حدث خطأ أثناء الحفظ");
-            else {
-                alert("تم نشر المنتج بنجاح!");
+                await _supabase.from('products').insert([{
+                    name: document.getElementById('pName').value,
+                    price: document.getElementById('pPrice').value,
+                    description: document.getElementById('pDesc').value,
+                    images: imageUrls
+                }]);
+                
+                alert("تم تحديث المجموعة بنجاح");
                 location.reload();
+            } catch (err) {
+                alert("تأكد من كتابة اسم للسياسة في Supabase Storage");
+                btn.innerText = "فشل الرفع - حاول مجدداً";
             }
         }
 
-        // جلب المنتجات وعرضها
-        async function loadProducts() {
-            const { data, error } = await _supabase.from('products').select('*').order('created_at', { ascending: false });
+        async function renderProducts() {
+            const { data } = await _supabase.from('products').select('*');
             const grid = document.getElementById('productsGrid');
-            grid.innerHTML = '';
+            const list = (data && data.length > 0) ? data : promoData;
 
-            data.forEach(p => {
-                const card = `
-                    <div class="bg-white border rounded shadow-sm overflow-hidden group">
-                        <div class="relative">
-                            <img src="${p.images[0]}" class="w-full h-80 object-cover">
-                            <a href="${p.images[0]}" download="AlNasr_${p.name}" class="absolute top-2 right-2 bg-white/80 p-2 rounded-full opacity-0 group-hover:opacity-100 transition">
-                                ⬇️ حفظ
-                            </a>
+            grid.innerHTML = list.map(p => `
+                <div class="product-card group">
+                    <div class="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] bg-gray-100">
+                        <img src="${p.images[0]}" class="w-full h-full object-cover transition duration-[1.5s] group-hover:scale-110">
+                        <a href="${p.images[0]}" download class="save-btn absolute top-6 left-6 p-4 rounded-full opacity-0 group-hover:opacity-100 transition shadow-xl">
+                            <svg width="18" height="18" fill="none" stroke="black" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        </a>
+                    </div>
+                    <div class="mt-8 flex justify-between items-start px-2">
+                        <div>
+                            <h3 class="text-xl font-bold tracking-tight">${p.name}</h3>
+                            <p class="text-gray-400 text-xs mt-2 uppercase tracking-widest italic">${p.description ? p.description.substring(0, 30) : 'قطعة يدوية فريدة'}</p>
                         </div>
-                        <div class="p-4 text-center">
-                            <h3 class="font-bold text-lg">${p.name}</h3>
-                            <p class="gold-text font-bold mb-2">${p.price} SDG</p>
-                            <div class="flex gap-1 justify-center mb-4">
-                                ${p.images.slice(1,4).map(img => `<img src="${img}" class="w-10 h-10 object-cover rounded border">`).join('')}
-                            </div>
-                            <button onclick="alert('وصف المنتج: ${p.desc || 'جلد طبيعي 100%'}\\n\\nمنتجات مشابهة قد تعجبك: شنط من نفس الفئة')" class="text-xs text-gray-400 underline">تفاصيل واقتراحات</button>
+                        <div class="text-right">
+                            <p class="text-lg font-medium text-accent">${p.price} <span class="text-[10px]">SDG</span></p>
+                            <a href="https://wa.me/249900623733?text=أود_طلب_${p.name}" class="text-[10px] font-bold border-b border-black mt-3 inline-block hover:text-accent hover:border-accent transition">طلب القطعة</a>
                         </div>
                     </div>
-                `;
-                grid.innerHTML += card;
-            });
+                </div>
+            `).join('');
         }
 
-        loadProducts();
+        renderProducts();
     </script>
 </body>
 </html>
