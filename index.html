@@ -3,193 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kosti Market - سوق كوستي الإلكتروني</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>متجر الجلود الفاخرة | كوستي - النصر</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Amiri:ital@1&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
-        .bg-gradient-teal { background: linear-gradient(135deg, #1e3a5f 0%, #0d8091 100%); }
-        .text-gold { color: #f5cf75; }
-        .bg-gold { background-color: #f5cf75; }
-        .card-gradient { background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0)); }
-        /* أنيميشن بسيط عند الضغط */
-        .btn-click:active { transform: scale(0.95); transition: 0.1s; }
+        :root {
+            --gold: #c5a059;
+            --black: #1a1a1a;
+            --white: #ffffff;
+            --bg: #faf8f5;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg);
+            color: var(--black);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo-area h1 {
+            font-family: 'Amiri', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 2px;
+            color: var(--black);
+        }
+
+        .welcome-section {
+            padding: 60px 20px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .welcome-section h2 {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .welcome-section p {
+            line-height: 1.8;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* معرض المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--white);
+            border: 1px solid #f0f0f0;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* السماح بحفظ الصور */
+            pointer-events: auto; 
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-info h3 {
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .price {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 1.3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        /* زر الواتساب */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #25d366;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: bold;
+        }
+
+        .location-tag {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 50px;
+            text-align: center;
+            padding-bottom: 100px;
+        }
+
+        footer {
+            background: var(--black);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <header class="bg-[#2c3e50] text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
-        <div class="flex items-center gap-4">
-            <button onclick="toggleMenu()" class="btn-click"><i class="fas fa-bars text-xl"></i></button>
-            <div class="relative cursor-pointer btn-click" onclick="alert('سلة المشتريات فارغة حالياً')">
-                <i class="fas fa-shopping-cart text-xl"></i>
-                <span id="cart-count" class="absolute -top-2 -right-2 bg-yellow-500 text-black text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">0</span>
-            </div>
-        </div>
-        <div class="text-center flex-1">
-            <h1 class="text-xl font-bold tracking-tight">Kosti Market</h1>
-            <p class="text-[10px] text-gray-300">سوق كوستي الإلكتروني</p>
-        </div>
-        <div class="bg-gold p-2 rounded-xl text-black btn-click">
-            <i class="fas fa-store"></i>
+    <header>
+        <div class="logo-area">
+            <h1>AL-NASR LEATHER</h1>
+            <p style="color: var(--gold); text-transform: uppercase; letter-spacing: 3px;">Handcrafted Luxury</p>
         </div>
     </header>
 
-    <section class="bg-gradient-teal text-white p-6 pb-12 text-center rounded-b-[2.5rem] shadow-xl">
-        <div class="inline-block border border-white/20 rounded-full px-4 py-1 text-xs mb-6 bg-white/10 backdrop-blur-md">
-            ⚡ أكبر سوق إلكتروني في كوستي
-        </div>
-        <h2 class="text-3xl font-extrabold mb-1">تسوق بذكاء</h2>
-        <h2 class="text-3xl font-extrabold text-gold mb-4">مع Kosti Market</h2>
-        <p class="text-sm text-gray-200 mb-8 leading-relaxed max-w-xs mx-auto">
-            اكتشف آلاف المنتجات والخدمات الإلكترونية بأفضل الأسعار. كل ما تحتاجه في مكان واحد.
+    <section class="welcome-section">
+        <h2>فخامة تُصنع باليد.. من قلب كوستي إليكِ</h2>
+        <p>
+            في ورشتنا بالنصر مربع 8، نحول الجلد الطبيعي إلى قطع فنية تروي قصة الأصالة والدقة. 
+            كل شنطة هي بصمة فريدة صُممت خصيصاً لمن يقدرون التميز والتفاصيل المتقنة.
         </p>
+    </section>
+
+    <div class="products-grid">
         
-        <form onsubmit="handleSearch(event)" class="bg-white/10 border border-white/20 rounded-2xl flex items-center p-1 mb-8 max-w-md mx-auto backdrop-blur-sm">
-            <button type="submit" class="bg-gold text-black px-6 py-2.5 rounded-2xl font-bold btn-click">بحث</button>
-            <input id="searchInput" type="text" placeholder="ابحث عن منتجات، خدمات، عروض" class="bg-transparent border-none outline-none text-white px-4 w-full text-sm placeholder-gray-300 text-right">
-            <i class="fas fa-search text-gray-300 ml-4"></i>
-        </form>
-
-        <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
-                <div class="text-gold font-bold text-xl">+10K</div>
-                <div class="text-[10px] text-gray-300">منتج</div>
-            </div>
-            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
-                <div class="text-gold font-bold text-xl">+5K</div>
-                <div class="text-[10px] text-gray-300">عميل سعيد</div>
-            </div>
-            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
-                <div class="text-gold font-bold text-xl">98%</div>
-                <div class="text-[10px] text-gray-300">رضا العملاء</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="p-6">
-        <div class="text-center mb-6">
-            <span class="bg-cyan-900/10 text-cyan-800 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">الأقسام الرئيسية</span>
-            <h3 class="text-2xl font-bold mt-3 text-gray-800">اكتشف مجموعتنا</h3>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-            <div onclick="filterCategory('ملابس')" class="relative h-60 rounded-3xl overflow-hidden shadow-md cursor-pointer btn-click">
-                <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=400" class="w-full h-full object-cover">
-                <div class="absolute inset-0 card-gradient flex flex-col justify-end items-center p-4">
-                    <div class="bg-white/20 backdrop-blur-md p-2 rounded-xl mb-2 text-white">
-                        <i class="fas fa-tshirt"></i>
-                    </div>
-                    <h4 class="text-white font-bold">ملابس</h4>
-                    <p class="text-gray-400 text-[10px]">2500+ منتج</p>
-                </div>
-            </div>
-            
-            <div onclick="filterCategory('إلكترونيات')" class="relative h-60 rounded-3xl overflow-hidden shadow-md cursor-pointer btn-click">
-                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400" class="w-full h-full object-cover">
-                <div class="absolute inset-0 card-gradient flex flex-col justify-end items-center p-4">
-                    <div class="bg-white/20 backdrop-blur-md p-2 rounded-xl mb-2 text-white">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h4 class="text-white font-bold">تلفونات</h4>
-                    <p class="text-gray-400 text-[10px]">950+ منتج</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="px-6 pb-6">
-        <div class="bg-gradient-teal rounded-[2rem] p-8 text-white text-center relative overflow-hidden shadow-lg">
-            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
-            <div class="inline-block bg-gold text-black px-4 py-1 rounded-full text-[10px] font-bold mb-4 uppercase">عروض حصرية</div>
-            <h3 class="text-2xl font-extrabold mb-3">خصم 50% على الإلكترونيات</h3>
-            <p class="text-xs text-gray-300 mb-6 px-4">تخفيضات هائلة على أحدث الهواتف الذكية. العرض ساري حتى نهاية الشهر.</p>
-            <div class="flex flex-col gap-3">
-                <button onclick="alert('تم تفعيل العرض!')" class="bg-gold text-black py-3 rounded-2xl font-bold btn-click shadow-lg">تسوق الآن</button>
-                <button onclick="window.location='#contact'" class="bg-white/10 border border-white/20 py-3 rounded-2xl font-bold btn-click">المزيد من التفاصيل</button>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact" class="bg-[#0f172a] text-gray-400 p-10 rounded-t-[3rem]">
-        <div class="flex items-center gap-4 mb-8">
-            <div class="bg-gold p-2 rounded-xl text-black"><i class="fas fa-store"></i></div>
-            <div>
-                <h2 class="text-white font-bold text-lg">Kosti Market</h2>
-                <p class="text-[10px]">سوق كوستي الإلكتروني</p>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="شنطة جلدية فاخرة">
+            <div class="product-info">
+                <h3>شنطة كلاسيك - جلد طبيعي</h3>
+                <span class="price">45,000 SDG</span>
+                <p style="font-size: 0.9rem; color: #777;">صناعة يدوية بالكامل - متوفرة بعدة ألوان</p>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 gap-8">
-            <div>
-                <h4 class="text-white font-bold mb-4 border-r-4 border-gold pr-3">روابط سريعة</h4>
-                <ul class="space-y-3 text-sm">
-                    <li><a href="#" class="hover:text-gold transition">الرئيسية</a></li>
-                    <li><a href="#" class="hover:text-gold transition">أحدث المنتجات</a></li>
-                    <li><a href="#" class="hover:text-gold transition">العروض اليومية</a></li>
-                    <li><a href="#" class="hover:text-gold transition">سياسة الاسترجاع</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h4 class="text-white font-bold mb-4 border-r-4 border-gold pr-3">تواصل معنا</h4>
-                <ul class="space-y-4 text-sm">
-                    <li class="flex items-start gap-3 justify-end">
-                        <span class="text-right">كوستي، ولاية النيل الأبيض، السودان</span>
-                        <i class="fas fa-map-marker-alt text-gold mt-1"></i>
-                    </li>
-                    <li class="flex items-center gap-3 justify-end">
-                        <a href="tel:249900623733" class="hover:text-white transition">249900623733+</a>
-                        <i class="fas fa-phone text-gold"></i>
-                    </li>
-                    <li class="flex items-center gap-3 justify-end">
-                        <a href="mailto:mezzika33@gmail.com" class="hover:text-white transition">mezzika33@gmail.com</a>
-                        <i class="fas fa-envelope text-gold"></i>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="pt-6 border-t border-gray-800">
-                <p class="text-xs mb-3 text-right">اشترك في النشرة البريدية</p>
-                <div class="flex gap-2">
-                    <button onclick="subscribe()" class="bg-gold text-black p-3 rounded-xl btn-click"><i class="fas fa-paper-plane"></i></button>
-                    <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 bg-gray-800/50 border border-gray-700 rounded-xl px-4 text-white text-right text-sm outline-none focus:border-gold">
-                </div>
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="حقيبة يد يدوية">
+            <div class="product-info">
+                <h3>حقيبة النصر الملكية</h3>
+                <span class="price">55,000 SDG</span>
+                <p style="font-size: 0.9rem; color: #777;">إصدار محدود - خياطة يدوية متينة</p>
             </div>
         </div>
 
-        <div class="text-center text-[10px] mt-12 text-gray-600">
-            &copy; 2026 Kosti Market. جميع الحقوق محفوظة.
-        </div>
+    </div>
+
+    <div class="location-tag">
+        📍 كوستي - حي النصر - مربع 8
+    </div>
+
+    <a href="https://wa.me/249900623733" class="whatsapp-btn" target="_blank">
+        <span>اطلب عبر واتساب</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.893-11.891 3.181 0 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.481 8.403 0 6.556-5.332 11.892-11.893 11.892-1.99 0-3.951-.499-5.692-1.447l-6.394 1.765zm5.35-4.808c1.558.927 3.42 1.417 5.318 1.418 5.617 0 10.186-4.57 10.187-10.188 0-2.721-1.06-5.28-2.984-7.205-1.925-1.924-4.484-2.983-7.204-2.983-5.618 0-10.188 4.571-10.188 10.189 0 2.112.653 4.175 1.888 5.912l-.992 3.625 3.71-.973zm10.428-7.143c-.273-.137-1.613-.795-1.863-.886-.25-.091-.432-.136-.613.137-.182.273-.705.886-.864 1.068-.159.182-.318.204-.591.068-.272-.137-1.15-.424-2.19-1.352-.81-.722-1.357-1.614-1.516-1.887-.159-.273-.017-.42.12-.556.123-.122.272-.318.409-.477.136-.159.182-.273.272-.455.091-.181.046-.34-.023-.477-.068-.136-.613-1.477-.841-2.023-.222-.53-.447-.458-.613-.466-.159-.008-.34-.009-.522-.009-.182 0-.477.068-.727.34-.25.273-.954.932-.954 2.273 0 1.341.977 2.636 1.114 2.818.136.182 1.922 2.935 4.656 4.114.65.28 1.157.447 1.553.573.654.207 1.25.177 1.719.108.524-.077 1.613-.659 1.841-1.295.227-.636.227-1.181.159-1.295-.068-.113-.25-.181-.523-.318z"/></svg>
+    </a>
+
+    <footer>
+        <p>جميع الحقوق محفوظة &copy; 2024 - AL-NASR Luxury Leather</p>
     </footer>
 
-    <script>
-        // دالة البحث
-        function handleSearch(e) {
-            e.preventDefault();
-            const query = document.getElementById('searchInput').value;
-            if(query.trim() !== "") {
-                alert("جاري البحث عن: " + query);
-            } else {
-                alert("يرجى إدخال كلمة للبحث");
-            }
-        }
-
-        // دالة التصنيف
-        function filterCategory(cat) {
-            alert("سيتم عرض قسم: " + cat);
-        }
-
-        // النشرة البريدية
-        function subscribe() {
-            alert("شكراً للاشتراك! ستصلك العروض قريباً.");
-        }
-
-        // القائمة الجانبية (بسيطة)
-        function toggleMenu() {
-            alert("تم فتح القائمة الجانبية");
-        }
-    </script>
 </body>
 </html>
