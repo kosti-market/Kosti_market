@@ -8,148 +8,188 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Cairo', sans-serif; background-color: #f8f9fa; }
-        .bg-gradient-dark { background: linear-gradient(180deg, #2c3e50 0%, #1e3a5f 100%); }
+        body { font-family: 'Cairo', sans-serif; scroll-behavior: smooth; }
         .bg-gradient-teal { background: linear-gradient(135deg, #1e3a5f 0%, #0d8091 100%); }
         .text-gold { color: #f5cf75; }
         .bg-gold { background-color: #f5cf75; }
-        .card-gradient { background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0)); }
+        .card-gradient { background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0)); }
+        /* أنيميشن بسيط عند الضغط */
+        .btn-click:active { transform: scale(0.95); transition: 0.1s; }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-gray-50 text-gray-800">
 
-    <header class="bg-gray-700 text-white p-4 flex justify-between items-center sticky top-0 z-50">
+    <header class="bg-[#2c3e50] text-white p-4 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <div class="flex items-center gap-4">
-            <i class="fas fa-bars text-xl cursor-pointer"></i>
-            <div class="relative cursor-pointer">
+            <button onclick="toggleMenu()" class="btn-click"><i class="fas fa-bars text-xl"></i></button>
+            <div class="relative cursor-pointer btn-click" onclick="alert('سلة المشتريات فارغة حالياً')">
                 <i class="fas fa-shopping-cart text-xl"></i>
-                <span class="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold w-4 h-4 flex items-center justify-center rounded-full">0</span>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-yellow-500 text-black text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full">0</span>
             </div>
         </div>
         <div class="text-center flex-1">
-            <h1 class="text-2xl font-bold">Kosti Market</h1>
-            <p class="text-xs text-gray-300">سوق كوستي الإلكتروني</p>
+            <h1 class="text-xl font-bold tracking-tight">Kosti Market</h1>
+            <p class="text-[10px] text-gray-300">سوق كوستي الإلكتروني</p>
         </div>
-        <div class="bg-gold p-2 rounded-xl text-black">
+        <div class="bg-gold p-2 rounded-xl text-black btn-click">
             <i class="fas fa-store"></i>
         </div>
     </header>
 
-    <section class="bg-gradient-teal text-white p-6 pb-12 text-center rounded-b-3xl">
-        <div class="inline-block border border-gray-400 rounded-full px-4 py-1 text-sm mb-6 bg-white/10">
+    <section class="bg-gradient-teal text-white p-6 pb-12 text-center rounded-b-[2.5rem] shadow-xl">
+        <div class="inline-block border border-white/20 rounded-full px-4 py-1 text-xs mb-6 bg-white/10 backdrop-blur-md">
             ⚡ أكبر سوق إلكتروني في كوستي
         </div>
-        <h2 class="text-4xl font-extrabold mb-2 leading-tight">تسوق بذكاء</h2>
-        <h2 class="text-4xl font-extrabold text-gold mb-4">مع Kosti Market</h2>
-        <p class="text-sm text-gray-200 mb-8 leading-relaxed max-w-md mx-auto">
-            اكتشف آلاف المنتجات والخدمات الإلكترونية بأفضل الأسعار. من الملابس إلى السيارات، كل ما تحتاجه في مكان واحد.
+        <h2 class="text-3xl font-extrabold mb-1">تسوق بذكاء</h2>
+        <h2 class="text-3xl font-extrabold text-gold mb-4">مع Kosti Market</h2>
+        <p class="text-sm text-gray-200 mb-8 leading-relaxed max-w-xs mx-auto">
+            اكتشف آلاف المنتجات والخدمات الإلكترونية بأفضل الأسعار. كل ما تحتاجه في مكان واحد.
         </p>
         
-        <div class="bg-white/10 border border-white/20 rounded-full flex items-center p-1 mb-8 max-w-md mx-auto">
-            <button class="bg-gradient-to-r from-yellow-400 to-yellow-600 text-black px-6 py-2 rounded-full font-bold">بحث</button>
-            <input type="text" placeholder="ابحث عن منتجات، خدمات، عروض" class="bg-transparent border-none outline-none text-white px-4 w-full text-sm placeholder-gray-300">
+        <form onsubmit="handleSearch(event)" class="bg-white/10 border border-white/20 rounded-2xl flex items-center p-1 mb-8 max-w-md mx-auto backdrop-blur-sm">
+            <button type="submit" class="bg-gold text-black px-6 py-2.5 rounded-2xl font-bold btn-click">بحث</button>
+            <input id="searchInput" type="text" placeholder="ابحث عن منتجات، خدمات، عروض" class="bg-transparent border-none outline-none text-white px-4 w-full text-sm placeholder-gray-300 text-right">
             <i class="fas fa-search text-gray-300 ml-4"></i>
-        </div>
+        </form>
 
         <div class="grid grid-cols-3 gap-3">
-            <div class="bg-white/10 border border-white/20 p-4 rounded-xl">
-                <div class="text-gold font-bold text-2xl mb-1">98%</div>
-                <div class="text-xs">رضا العملاء</div>
+            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
+                <div class="text-gold font-bold text-xl">+10K</div>
+                <div class="text-[10px] text-gray-300">منتج</div>
             </div>
-            <div class="bg-white/10 border border-white/20 p-4 rounded-xl">
-                <div class="text-gold font-bold text-2xl mb-1">+5K</div>
-                <div class="text-xs">عميل سعيد</div>
+            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
+                <div class="text-gold font-bold text-xl">+5K</div>
+                <div class="text-[10px] text-gray-300">عميل سعيد</div>
             </div>
-            <div class="bg-white/10 border border-white/20 p-4 rounded-xl">
-                <div class="text-gold font-bold text-2xl mb-1">+10K</div>
-                <div class="text-xs">منتج</div>
+            <div class="bg-white/10 border border-white/10 p-3 rounded-2xl">
+                <div class="text-gold font-bold text-xl">98%</div>
+                <div class="text-[10px] text-gray-300">رضا العملاء</div>
             </div>
         </div>
     </section>
 
-    <section class="p-6 mt-4">
+    <section class="p-6">
         <div class="text-center mb-6">
-            <span class="bg-teal-700 text-white px-4 py-1 rounded-full text-sm">تصفح حسب الفئة</span>
-            <h3 class="text-3xl font-bold mt-3 mb-2 text-gray-800">الأقسام الرئيسية</h3>
-            <p class="text-gray-500 text-sm">اكتشف كل ما تحتاجه من مجموعتنا المتنوعة</p>
+            <span class="bg-cyan-900/10 text-cyan-800 px-4 py-1 rounded-full text-xs font-bold uppercase tracking-wider">الأقسام الرئيسية</span>
+            <h3 class="text-2xl font-bold mt-3 text-gray-800">اكتشف مجموعتنا</h3>
         </div>
 
         <div class="grid grid-cols-2 gap-4">
-            <div class="relative h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200">
-                <img src="https://images.unsplash.com/photo-1560243563-062bfc001d68?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Clothes" class="w-full h-full object-cover">
+            <div onclick="filterCategory('ملابس')" class="relative h-60 rounded-3xl overflow-hidden shadow-md cursor-pointer btn-click">
+                <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=400" class="w-full h-full object-cover">
                 <div class="absolute inset-0 card-gradient flex flex-col justify-end items-center p-4">
-                    <div class="bg-white/30 backdrop-blur-sm p-3 rounded-xl mb-2 text-white">
-                        <i class="fas fa-tshirt text-xl"></i>
+                    <div class="bg-white/20 backdrop-blur-md p-2 rounded-xl mb-2 text-white">
+                        <i class="fas fa-tshirt"></i>
                     </div>
-                    <h4 class="text-white font-bold text-xl">ملابس</h4>
-                    <p class="text-gray-300 text-xs">2500+ منتج</p>
+                    <h4 class="text-white font-bold">ملابس</h4>
+                    <p class="text-gray-400 text-[10px]">2500+ منتج</p>
                 </div>
             </div>
-            <div class="relative h-64 rounded-2xl overflow-hidden shadow-lg bg-gray-200">
-                <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Accessories" class="w-full h-full object-cover">
+            
+            <div onclick="filterCategory('إلكترونيات')" class="relative h-60 rounded-3xl overflow-hidden shadow-md cursor-pointer btn-click">
+                <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=400" class="w-full h-full object-cover">
                 <div class="absolute inset-0 card-gradient flex flex-col justify-end items-center p-4">
-                    <div class="bg-white/30 backdrop-blur-sm p-3 rounded-xl mb-2 text-white">
-                        <i class="fas fa-gem text-xl"></i>
+                    <div class="bg-white/20 backdrop-blur-md p-2 rounded-xl mb-2 text-white">
+                        <i class="fas fa-mobile-alt"></i>
                     </div>
-                    <h4 class="text-white font-bold text-xl">إكسسوارات</h4>
-                    <p class="text-gray-300 text-xs">1800+ منتج</p>
+                    <h4 class="text-white font-bold">تلفونات</h4>
+                    <p class="text-gray-400 text-[10px]">950+ منتج</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="p-4">
-        <div class="bg-gradient-teal rounded-3xl p-6 text-white text-center relative overflow-hidden">
-            <div class="inline-block bg-gold text-black px-4 py-1 rounded-full text-sm font-bold mb-4">
-                ⚡ عرض محدود
-            </div>
-            <h3 class="text-3xl font-extrabold mb-4 leading-snug">خصم 50% على<br>جميع الإلكترونيات</h3>
-            <p class="text-sm text-gray-200 mb-6">تخفيضات هائلة على أحدث الهواتف الذكية والأجهزة اللوحية والاكسسوارات. العرض ساري حتى نهاية الشهر.</p>
-            <div class="flex justify-center gap-3">
-                <button class="bg-gold text-black px-6 py-2 rounded-xl font-bold">تسوق الآن <i class="fas fa-arrow-left text-sm ml-1"></i></button>
-                <button class="border border-white/30 bg-white/10 px-6 py-2 rounded-xl font-bold">المزيد من التفاصيل</button>
+    <section class="px-6 pb-6">
+        <div class="bg-gradient-teal rounded-[2rem] p-8 text-white text-center relative overflow-hidden shadow-lg">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16"></div>
+            <div class="inline-block bg-gold text-black px-4 py-1 rounded-full text-[10px] font-bold mb-4 uppercase">عروض حصرية</div>
+            <h3 class="text-2xl font-extrabold mb-3">خصم 50% على الإلكترونيات</h3>
+            <p class="text-xs text-gray-300 mb-6 px-4">تخفيضات هائلة على أحدث الهواتف الذكية. العرض ساري حتى نهاية الشهر.</p>
+            <div class="flex flex-col gap-3">
+                <button onclick="alert('تم تفعيل العرض!')" class="bg-gold text-black py-3 rounded-2xl font-bold btn-click shadow-lg">تسوق الآن</button>
+                <button onclick="window.location='#contact'" class="bg-white/10 border border-white/20 py-3 rounded-2xl font-bold btn-click">المزيد من التفاصيل</button>
             </div>
         </div>
     </section>
 
-    <footer class="bg-[#0f172a] text-gray-300 p-8 mt-8 rounded-t-[3rem]">
-        <div class="flex items-center gap-3 mb-8 border-b border-gray-700 pb-6">
-            <div class="bg-gold p-2 rounded-xl text-black">
-                <i class="fas fa-store"></i>
-            </div>
+    <footer id="contact" class="bg-[#0f172a] text-gray-400 p-10 rounded-t-[3rem]">
+        <div class="flex items-center gap-4 mb-8">
+            <div class="bg-gold p-2 rounded-xl text-black"><i class="fas fa-store"></i></div>
             <div>
-                <h2 class="text-xl font-bold text-white">Kosti Market</h2>
-                <p class="text-xs text-gray-400">سوق كوستي الإلكتروني</p>
+                <h2 class="text-white font-bold text-lg">Kosti Market</h2>
+                <p class="text-[10px]">سوق كوستي الإلكتروني</p>
             </div>
         </div>
 
-        <ul class="space-y-3 mb-8 text-sm">
-            <li><a href="#" class="hover:text-white transition">ملابس</a></li>
-            <li><a href="#" class="hover:text-white transition">إكسسوارات عامة</a></li>
-            <li><a href="#" class="hover:text-white transition">تلفونات</a></li>
-            <li><a href="#" class="hover:text-white transition">سيارات</a></li>
-            <li><a href="#" class="hover:text-white transition">إلكترونيات</a></li>
-        </ul>
+        <div class="grid grid-cols-1 gap-8">
+            <div>
+                <h4 class="text-white font-bold mb-4 border-r-4 border-gold pr-3">روابط سريعة</h4>
+                <ul class="space-y-3 text-sm">
+                    <li><a href="#" class="hover:text-gold transition">الرئيسية</a></li>
+                    <li><a href="#" class="hover:text-gold transition">أحدث المنتجات</a></li>
+                    <li><a href="#" class="hover:text-gold transition">العروض اليومية</a></li>
+                    <li><a href="#" class="hover:text-gold transition">سياسة الاسترجاع</a></li>
+                </ul>
+            </div>
 
-        <h3 class="text-white font-bold text-lg mb-4">تواصل معنا</h3>
-        <ul class="space-y-3 text-sm mb-8 text-gray-400">
-            <li class="flex items-center justify-end gap-2"><i class="fas fa-map-marker-alt text-gold"></i> كوستي، ولاية النيل الأبيض، السودان</li>
-            <li class="flex items-center justify-end gap-2" dir="ltr"><i class="fas fa-phone text-gold"></i> +249 123 456 789</li>
-            <li class="flex items-center justify-end gap-2"><i class="fas fa-envelope text-gold"></i> info@kostimarket.com</li>
-        </ul>
+            <div>
+                <h4 class="text-white font-bold mb-4 border-r-4 border-gold pr-3">تواصل معنا</h4>
+                <ul class="space-y-4 text-sm">
+                    <li class="flex items-start gap-3 justify-end">
+                        <span class="text-right">كوستي، ولاية النيل الأبيض، السودان</span>
+                        <i class="fas fa-map-marker-alt text-gold mt-1"></i>
+                    </li>
+                    <li class="flex items-center gap-3 justify-end">
+                        <a href="tel:249900623733" class="hover:text-white transition">249900623733+</a>
+                        <i class="fas fa-phone text-gold"></i>
+                    </li>
+                    <li class="flex items-center gap-3 justify-end">
+                        <a href="mailto:mezzika33@gmail.com" class="hover:text-white transition">mezzika33@gmail.com</a>
+                        <i class="fas fa-envelope text-gold"></i>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="mb-8">
-            <p class="text-sm mb-2 text-right">اشترك في النشرة البريدية</p>
-            <div class="flex gap-2">
-                <button class="bg-gold text-black p-3 rounded-xl"><i class="fas fa-paper-plane"></i></button>
-                <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 bg-gray-800 border border-gray-700 rounded-xl px-4 text-white text-right outline-none">
+            <div class="pt-6 border-t border-gray-800">
+                <p class="text-xs mb-3 text-right">اشترك في النشرة البريدية</p>
+                <div class="flex gap-2">
+                    <button onclick="subscribe()" class="bg-gold text-black p-3 rounded-xl btn-click"><i class="fas fa-paper-plane"></i></button>
+                    <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 bg-gray-800/50 border border-gray-700 rounded-xl px-4 text-white text-right text-sm outline-none focus:border-gold">
+                </div>
             </div>
         </div>
 
-        <div class="text-center text-xs text-gray-500 pt-6 border-t border-gray-800">
-            &copy; Kosti Market 2026. جميع الحقوق محفوظة.
+        <div class="text-center text-[10px] mt-12 text-gray-600">
+            &copy; 2026 Kosti Market. جميع الحقوق محفوظة.
         </div>
     </footer>
 
+    <script>
+        // دالة البحث
+        function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== "") {
+                alert("جاري البحث عن: " + query);
+            } else {
+                alert("يرجى إدخال كلمة للبحث");
+            }
+        }
+
+        // دالة التصنيف
+        function filterCategory(cat) {
+            alert("سيتم عرض قسم: " + cat);
+        }
+
+        // النشرة البريدية
+        function subscribe() {
+            alert("شكراً للاشتراك! ستصلك العروض قريباً.");
+        }
+
+        // القائمة الجانبية (بسيطة)
+        function toggleMenu() {
+            alert("تم فتح القائمة الجانبية");
+        }
+    </script>
 </body>
 </html>
