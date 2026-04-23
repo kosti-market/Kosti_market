@@ -5,192 +5,203 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KOSTI MARKET ELITE 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&family=Outfit:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
-        :root { --p: #2563eb; --s: #7c3aed; --glass: rgba(255, 255, 255, 0.8); }
-        body { font-family: 'Cairo', sans-serif; background: #f4f7fe; color: #1e293b; overflow-x: hidden; }
+        :root { --p: #2563eb; --glass: rgba(255, 255, 255, 0.85); }
+        body { font-family: 'Cairo', sans-serif; background: #f0f4f9; color: #1e293b; transition: 0.4s; }
+        .glass-panel { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); border-radius: 2.5rem; }
         
-        /* Glass Effect 2026 */
-        .glass-panel { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid rgba(255,255,255,0.5); border-radius: 2.5rem; }
-        
-        /* Stories Style */
-        .story-circle { min-width: 75px; height: 75px; border: 3px solid #2563eb; border-radius: 50%; padding: 3px; cursor: pointer; transition: 0.3s; }
-        .story-circle:active { transform: scale(0.9); }
+        /* Stories */
+        .story-circle { min-width: 70px; height: 70px; border: 3px solid #2563eb; border-radius: 50%; padding: 2px; cursor: pointer; flex-shrink: 0; }
         .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        /* Notification Toast */
-        #notif { position: fixed; top: 120px; left: 20px; z-index: 1000; transform: translateX(-150%); transition: 0.5s; }
-        #notif.show { transform: translateX(0); }
-
-        .bento-item { transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .bento-item:hover { transform: translateY(-10px) scale(1.02); }
+        .bento-item { transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .bento-item:hover { transform: translateY(-8px); shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
         
+        .section-view { display: none; opacity: 0; transform: scale(0.98); transition: 0.4s; }
+        .section-view.active { display: block; opacity: 1; transform: scale(1); }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .nav-link.active { background: #2563eb; color: white; border-radius: 1.5rem; }
+        #notif { position: fixed; top: 110px; left: 20px; z-index: 1000; transform: translateX(-150%); transition: 0.6s; }
+        #notif.show { transform: translateX(0); }
     </style>
 </head>
 <body class="pb-32">
 
-    <div id="notif" class="glass-panel p-4 flex items-center gap-3 shadow-xl border-blue-100 max-w-xs">
-        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">✅</div>
+    <div id="notif" class="glass-panel p-4 flex items-center gap-3 shadow-2xl border-blue-100 max-w-xs">
+        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">🔔</div>
         <div>
-            <p class="text-[10px] font-black opacity-50 uppercase">نشاط الآن</p>
-            <p id="notif-text" class="text-xs font-bold text-blue-900">قام شخص بشراء لابتوب من كوستي!</p>
+            <p id="notif-text" class="text-xs font-bold text-blue-900 italic">باع تاجر 'كردفان' لابتوب الآن!</p>
         </div>
     </div>
 
     <header class="sticky top-4 z-[500] container mx-auto px-4">
-        <nav class="glass-panel p-3 flex justify-between items-center shadow-2xl">
-            <h1 class="text-2xl font-[900] tracking-tighter text-blue-600 px-4">KOSTI.M</h1>
-            <div class="hidden md:flex gap-2">
-                <button onclick="showSection('all')" class="nav-link active px-6 py-2 font-bold">الرئيسية</button>
-                <button onclick="showSection('vendor')" class="px-6 py-2 font-bold opacity-60">لوحة التاجر</button>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="alert('جاري تفعيل البحث الصوتي...')" class="w-11 h-11 rounded-2xl glass-panel flex items-center justify-center">🎙️</button>
-                <button onclick="showSection('vendor')" class="bg-blue-600 text-white px-6 py-2 rounded-2xl font-black shadow-lg shadow-blue-200">بيع الآن</button>
+        <nav class="glass-panel p-3 flex justify-between items-center shadow-xl">
+            <h1 class="text-2xl font-[900] text-blue-600 px-4 tracking-tighter" onclick="showSection('all')">KOSTI.M</h1>
+            <div class="flex gap-2">
+                <button onclick="showSection('vendor')" class="bg-blue-600 text-white px-6 py-2 rounded-2xl font-black shadow-lg shadow-blue-200 hover:scale-105 transition">لوحة التاجر</button>
             </div>
         </nav>
     </header>
 
     <main class="container mx-auto px-4 mt-8">
         
-        <section class="mb-10 overflow-x-auto no-scrollbar flex gap-5 py-2" id="story-container">
-            <div class="flex flex-col items-center gap-2">
-                <div class="story-circle border-gray-300 flex items-center justify-center text-2xl bg-white">+</div>
-                <span class="text-[10px] font-bold">قصتك</span>
-            </div>
+        <div id="section-all" class="section-view active">
+            <section class="mb-8 overflow-x-auto no-scrollbar flex gap-4 py-2" id="story-container">
+                <div class="flex flex-col items-center gap-1">
+                    <div class="story-circle border-gray-300 flex items-center justify-center text-2xl bg-white" onclick="showSection('vendor')">+</div>
+                    <span class="text-[9px] font-bold">إضافة</span>
+                </div>
             </section>
 
-        <div id="section-all" class="space-y-12">
-            
-            <div class="glass-panel p-10 bg-gradient-to-br from-blue-600 to-indigo-800 text-white overflow-hidden relative">
+            <div class="glass-panel p-8 bg-gradient-to-br from-blue-700 to-indigo-900 text-white relative overflow-hidden mb-10">
                 <div class="relative z-10">
-                    <span class="bg-white/20 px-4 py-1 rounded-full text-[10px] font-black uppercase">عروض رمضان 2026</span>
-                    <h2 class="text-4xl font-black mt-4">تسوق من قلب كوستي <br> بلمسة واحدة.</h2>
-                    <button class="mt-8 bg-white text-blue-600 px-8 py-3 rounded-2xl font-black shadow-xl">اكتشف المزيد</button>
+                    <h2 class="text-3xl font-black">سوق كوستي الذكي 🇸🇩</h2>
+                    <p class="mt-2 opacity-80 font-bold">أول تجربة تسوق تفاعلية في النيل الأبيض لعام 2026</p>
                 </div>
-                <div class="absolute -left-10 top-0 text-[15rem] opacity-10 font-black">KOSTI</div>
+                <div class="absolute -right-10 -bottom-10 text-9xl opacity-10 font-black italic">NEW</div>
             </div>
 
-            <div>
-                <h3 class="text-2xl font-black mb-6">وصل حديثاً ✨</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-all">
-                    </div>
-            </div>
+            <h3 class="text-2xl font-black mb-6 flex items-center gap-2">✨ وصل حديثاً</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-all">
+                </div>
         </div>
 
-        <div id="section-vendor" class="hidden">
-            <div class="max-w-2xl mx-auto glass-panel p-10 shadow-2xl">
-                <h2 class="text-2xl font-black mb-6">رفع منتج جديد 🚀</h2>
-                <div class="space-y-5">
-                    <input type="text" id="p-name" placeholder="اسم المنتج" class="w-full p-5 bg-white/50 rounded-[1.5rem] border-none ring-1 ring-blue-100 outline-none">
-                    <div class="flex gap-4">
-                        <input type="number" id="p-price" placeholder="السعر" class="w-1/2 p-5 bg-white/50 rounded-[1.5rem] border-none ring-1 ring-blue-100 outline-none">
-                        <select id="p-cat" class="w-1/2 p-5 bg-white/50 rounded-[1.5rem] border-none ring-1 ring-blue-100 outline-none font-bold">
-                            <option value="phones">هواتف</option>
-                            <option value="clothes">ملابس</option>
-                            <option value="cars">سيارات</option>
-                        </select>
+        <div id="section-vendor" class="section-view">
+            <div class="max-w-xl mx-auto glass-panel p-8 shadow-2xl">
+                <h2 class="text-2xl font-black mb-8 border-b pb-4">📦 إضافة معروض جديد</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold mb-2 mr-2">اسم المنتج</label>
+                        <input type="text" id="p-name" placeholder="مثلاً: آيفون 15 برو" class="w-full p-4 glass-panel bg-white/50 border-none outline-none ring-1 ring-blue-100">
                     </div>
-                    <label class="w-full h-40 border-2 border-dashed border-blue-400 rounded-[2rem] flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition">
-                        <span class="text-4xl">📸</span>
-                        <span class="font-black text-blue-600 mt-2">ارفع صورة من الاستوديو</span>
-                        <input type="file" id="p-file" accept="image/*" class="hidden" onchange="previewFile()">
-                    </label>
-                    <div id="file-status" class="text-center text-xs font-bold text-blue-400"></div>
-                    <button onclick="saveProduct()" class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-black text-xl shadow-2xl shadow-blue-300">نشر المنتج الآن</button>
+                    <div>
+                        <label class="block text-sm font-bold mb-2 mr-2">السعر (ج.س)</label>
+                        <input type="number" id="p-price" placeholder="حدد سعرك" class="w-full p-4 glass-panel bg-white/50 border-none outline-none ring-1 ring-blue-100">
+                    </div>
+                    
+                    <div class="relative group">
+                        <label class="w-full h-44 border-2 border-dashed border-blue-400 rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition-all">
+                            <div class="text-4xl group-hover:scale-125 transition">📸</div>
+                            <span class="font-black text-blue-600 mt-3">اختر صورة من هاتفك</span>
+                            <input type="file" id="p-file" accept="image/*" class="hidden" onchange="handleFileStatus()">
+                        </label>
+                    </div>
+                    <p id="file-status" class="text-center text-xs font-bold text-green-600"></p>
+
+                    <button onclick="saveAndPublish()" class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-black text-xl shadow-2xl shadow-blue-300 hover:bg-blue-700 active:scale-95 transition">نشر الآن في المتجر 🚀</button>
+                    <button onclick="showSection('all')" class="w-full text-gray-400 font-bold py-2 text-sm">إلغاء والعودة</button>
                 </div>
             </div>
         </div>
     </main>
 
-    <div class="fixed bottom-6 inset-x-0 mx-auto w-[90%] max-w-md glass-panel p-3 flex justify-around items-center z-[1000] shadow-2xl border-white/40">
-        <button onclick="showSection('all')" class="flex flex-col items-center gap-1"><span>🏠</span><span class="text-[10px] font-bold">الرئيسية</span></button>
-        <button onclick="showSection('vendor')" class="flex flex-col items-center gap-1 text-gray-400"><span>📦</span><span class="text-[10px] font-bold">متجري</span></button>
-        <div class="relative -top-8">
-            <button onclick="checkout()" class="w-16 h-16 bg-blue-600 text-white rounded-full shadow-2xl shadow-blue-400 border-4 border-white flex items-center justify-center text-2xl">🛒</button>
-        </div>
-        <button class="flex flex-col items-center gap-1 text-gray-400"><span>💬</span><span class="text-[10px] font-bold">محادثة</span></button>
-        <button class="flex flex-col items-center gap-1 text-gray-400"><span>👤</span><span class="text-[10px] font-bold">حسابي</span></button>
+    <div class="fixed bottom-6 inset-x-0 mx-auto w-[92%] max-w-lg glass-panel p-3 flex justify-around items-center z-[1000] shadow-2xl">
+        <button onclick="showSection('all')" class="flex flex-col items-center"><span>🏠</span><span class="text-[9px] font-bold">الرئيسية</span></button>
+        <button onclick="showSection('vendor')" class="flex flex-col items-center opacity-40"><span>📦</span><span class="text-[9px] font-bold">بيعي</span></button>
+        <button onclick="checkout()" class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl shadow-xl shadow-blue-300 -mt-10 border-4 border-white">🛒</button>
+        <button class="flex flex-col items-center opacity-40"><span>💬</span><span class="text-[9px] font-bold">دردشة</span></button>
+        <button class="flex flex-col items-center opacity-40"><span>👤</span><span class="text-[9px] font-bold">حسابي</span></button>
     </div>
 
     <script>
-        let db = [];
+        let db = []; // قاعدة البيانات المؤقتة للمنتجات
         let cart = [];
 
-        // نظام الإشعارات الوهمي لتعزيز الحيوية
-        function pushNotif() {
-            const texts = ["باع تاجر 'الأمين' هاتفاً الآن", "انضم تاجر جديد من سوق كوستي", "خصومات 20% بدأت الآن!", "باقي قطعتين من آيفون 15"];
-            document.getElementById('notif-text').innerText = texts[Math.floor(Math.random()*texts.length)];
-            document.getElementById('notif').classList.add('show');
-            setTimeout(() => document.getElementById('notif').classList.remove('show'), 4000);
-        }
-        setInterval(pushNotif, 15000);
-
         function showSection(id) {
-            document.getElementById('section-all').classList.toggle('hidden', id !== 'all');
-            document.getElementById('section-vendor').classList.toggle('hidden', id !== 'vendor');
-            renderProducts();
+            document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById(`section-${id}`);
+            target.classList.add('active');
+            renderUI();
         }
 
-        function previewFile() {
+        function handleFileStatus() {
             const file = document.getElementById('p-file').files[0];
-            if(file) document.getElementById('file-status').innerText = "✅ جاهز للنشر: " + file.name;
+            if(file) document.getElementById('file-status').innerText = "✅ جاهز للرفع: " + file.name;
         }
 
-        function saveProduct() {
+        // الوظيفة الأساسية: حفظ المنتج مع الصورة المرفوعة
+        function saveAndPublish() {
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
-            const cat = document.getElementById('p-cat').value;
             const fileInput = document.getElementById('p-file');
 
             if (name && price && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const product = { id: Date.now(), name, price, cat, img: e.target.result };
-                    db.unshift(product);
-                    addStory(product.img);
-                    alert("✅ تم النشر في سوق كوستي!");
+                    const productData = {
+                        id: Date.now(),
+                        name: name,
+                        price: price,
+                        img: e.target.result // هذا يحفظ الصورة المرفوعة كـ DataURL
+                    };
+                    
+                    // إضافته لقاعدة البيانات
+                    db.unshift(productData);
+                    
+                    // إضافة صورة للستوري
+                    addToStory(productData.img);
+                    
+                    alert("تم نشر منتجك بنجاح في كوستي ماركت!");
+                    
+                    // تفريغ الحقول والعودة للرئيسية
+                    document.getElementById('p-name').value = '';
+                    document.getElementById('p-price').value = '';
+                    document.getElementById('p-file').value = '';
+                    document.getElementById('file-status').innerText = '';
+                    
                     showSection('all');
                 };
                 reader.readAsDataURL(fileInput.files[0]);
-            } else { alert("اكمل البيانات!"); }
+            } else {
+                alert("يرجى إكمال البيانات واختيار صورة المنتج أولاً!");
+            }
         }
 
-        function addStory(img) {
-            const container = document.getElementById('story-container');
-            container.innerHTML += `<div class="story-circle animate__animated animate__bounceIn"><img src="${img}"></div>`;
+        function addToStory(img) {
+            const storyContainer = document.getElementById('story-container');
+            const newStory = `<div class="story-circle animate-bounce"><img src="${img}"></div>`;
+            storyContainer.innerHTML += newStory;
         }
 
-        function renderProducts() {
+        function renderUI() {
             const grid = document.getElementById('grid-all');
-            grid.innerHTML = db.length ? '' : '<div class="col-span-full text-center py-20 opacity-20 font-black">المتجر ينتظر معروضاتك..</div>';
+            grid.innerHTML = db.length ? '' : '<div class="col-span-full text-center py-20 opacity-30 font-black italic">لا يوجد معروضات حالياً.. ارفع منتجك الأول الآن!</div>';
             
             db.forEach(item => {
                 grid.innerHTML += `
-                    <div class="bento-item glass-panel p-4 flex flex-col group relative overflow-hidden">
-                        <div class="rounded-3xl overflow-hidden h-44 mb-3">
+                    <div class="bento-item glass-panel p-4 flex flex-col group">
+                        <div class="rounded-[2rem] overflow-hidden h-44 mb-3">
                             <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         </div>
-                        <h4 class="font-black text-sm px-1">${item.name}</h4>
+                        <h4 class="font-black text-sm px-1 truncate">${item.name}</h4>
                         <div class="mt-4 flex justify-between items-center px-1">
                             <span class="text-blue-600 font-black text-lg">${parseInt(item.price).toLocaleString()} <small class="text-[8px]">ج.س</small></span>
-                            <button onclick="addToCart(${item.id})" class="bg-gray-100 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-blue-600 hover:text-white transition">🛒</button>
+                            <button onclick="addToCart(${item.id})" class="bg-blue-50 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-blue-600 hover:text-white transition">🛒</button>
                         </div>
                     </div>`;
             });
         }
 
         function addToCart(id) {
-            cart.push(db.find(i => i.id === id));
-            pushNotif();
+            const product = db.find(p => p.id === id);
+            cart.push(product);
+            
+            // إشعار وهمي لزيادة الحماس
+            const notif = document.getElementById('notif');
+            document.getElementById('notif-text').innerText = `تمت إضافة ${product.name} للسلة!`;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 3000);
         }
 
         function checkout() {
-            if(!cart.length) return alert("السلة فارغة");
-            window.open(`https://wa.me/249123456789?text=أريد شراء ${cart.length} منتجات`);
+            if(cart.length === 0) return alert("السلة فارغة!");
+            let msg = `أريد شراء ${cart.length} منتجات من كوستي ماركت.`;
+            window.open(`https://wa.me/249123456789?text=${encodeURIComponent(msg)}`);
         }
+
+        // تشغيل العرض الأولي
+        renderUI();
     </script>
 </body>
 </html>
