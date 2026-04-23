@@ -3,262 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOSTI MARKET ELITE | كوستي ماركت برو</title>
+    <title>KOSTI MARKET | منصة التجار الاحترافية</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #f0f2f5; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
-        .hero-gradient { background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%); }
-        .category-chip:hover { transform: scale(1.05); }
-        .product-card:hover .product-img { transform: scale(1.1); }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        body { font-family: 'Cairo', sans-serif; transition: all 0.5s ease; }
+        .tab-active { border-bottom: 4px solid #1d4ed8; color: #1d4ed8; }
+        .glass-panel { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(15px); }
+        .sidebar-item:hover { background: #eff6ff; color: #1d4ed8; }
     </style>
 </head>
-<body class="pb-24">
+<body class="bg-gray-50">
 
-    <div class="bg-blue-900 text-white text-[10px] py-1 text-center font-bold tracking-widest uppercase">
-        شحن مجاني داخل كوستي للطلبات أكثر من 50,000 ج.س
-    </div>
-
-    <nav class="glass sticky top-0 z-[100] border-b border-white/20 shadow-sm">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="text-3xl font-black text-blue-900">KOSTI<span class="text-blue-500 underline">MARKET</span></div>
-            </div>
-            <div class="flex gap-4">
-                <div class="relative cursor-pointer" onclick="openCart()">
-                    <svg class="w-8 h-8 text-blue-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center animate-pulse">0</span>
-                </div>
-                <button onclick="toggleVendor()" class="bg-yellow-400 text-blue-900 font-black px-4 py-1 rounded-full text-sm shadow-md">لوحة التاجر</button>
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-black text-blue-800">KOSTI <span class="text-blue-500">PRO</span></h1>
+            <div class="flex gap-2">
+                <button onclick="showPage('user')" class="px-4 py-2 rounded-lg font-bold hover:bg-gray-100">🛒 تسوق</button>
+                <button onclick="showPage('vendor')" class="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold shadow-lg">👨‍💼 لوحة التاجر</button>
             </div>
         </div>
     </nav>
 
-    <div class="container mx-auto px-4 mt-4">
-        <div class="hero-gradient rounded-[2rem] p-8 text-white relative overflow-hidden shadow-2xl min-h-[200px] flex items-center">
-            <div class="z-10 relative max-w-lg">
-                <span class="bg-red-600 text-[10px] px-3 py-1 rounded-full font-bold">عرض محدود</span>
-                <h2 class="text-3xl md:text-5xl font-black mt-2 mb-4 leading-tight text-yellow-400">تخفيضات العيد وصلت!</h2>
-                <p class="text-blue-100 opacity-80">اشترِ أي قطعتين واحصل على الثالثة مجاناً في قسم الملابس.</p>
-            </div>
-            <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="absolute left-0 bottom-0 w-48 opacity-20 pointer-events-none">
-        </div>
-    </div>
-
-    <div class="container mx-auto px-4 mt-6 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-        <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-blue-600 font-black text-lg">150+</p>
-            <p class="text-[10px] text-gray-500 font-bold uppercase">تاجر نشط</p>
-        </div>
-        <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
-            <p class="text-green-600 font-black text-lg">24/7</p>
-            <p class="text-[10px] text-gray-500 font-bold uppercase">توصيل سريع</p>
-        </div>
+    <section id="user-page" class="page-content animate__animated animate__fadeIn">
+        <div class="bg-blue-900 text-white py-10 px-4 text-center">
+            <h2 class="text-3xl font-bold mb-2">مرحباً بك في كوستي ماركت</h2>
+            <p class="opacity-75">تصفح آلاف المنتجات من تجار كوستي الموثوقين</p>
         </div>
 
-    <section class="container mx-auto px-4 mt-10">
-        <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-black text-blue-900">تصفح حسب الفئة</h3>
-            <span class="text-blue-500 text-sm font-bold cursor-pointer">عرض الكل</span>
+        <div class="container mx-auto px-4 py-6 flex gap-4 overflow-x-auto scrollbar-hide">
+            <button onclick="filterBy('all')" class="bg-white px-6 py-2 rounded-full shadow-sm font-bold min-w-fit">الكل</button>
+            <button onclick="filterBy('phones')" class="bg-white px-6 py-2 rounded-full shadow-sm font-bold min-w-fit">📱 هواتف</button>
+            <button onclick="filterBy('clothes')" class="bg-white px-6 py-2 rounded-full shadow-sm font-bold min-w-fit">👕 ملابس</button>
+            <button onclick="filterBy('cars')" class="bg-white px-6 py-2 rounded-full shadow-sm font-bold min-w-fit">🚗 سيارات</button>
         </div>
-        <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-            <div onclick="filterBy('all')" class="category-chip cursor-pointer flex flex-col items-center min-w-[80px]">
-                <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-2 hover:bg-blue-600 hover:text-white transition-all text-2xl">🌍</div>
-                <span class="text-xs font-bold">الكل</span>
+
+        <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 pb-24" id="shop-grid">
             </div>
-            <div onclick="filterBy('phones')" class="category-chip cursor-pointer flex flex-col items-center min-w-[80px]">
-                <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-2 text-2xl">📱</div>
-                <span class="text-xs font-bold">هواتف</span>
-            </div>
-            <div onclick="filterBy('clothes')" class="category-chip cursor-pointer flex flex-col items-center min-w-[80px]">
-                <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-2 text-2xl">👕</div>
-                <span class="text-xs font-bold">ملابس</span>
-            </div>
-            <div onclick="filterBy('cars')" class="category-chip cursor-pointer flex flex-col items-center min-w-[80px]">
-                <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-2 text-2xl">🚗</div>
-                <span class="text-xs font-bold">سيارات</span>
-            </div>
-            <div onclick="filterBy('electric')" class="category-chip cursor-pointer flex flex-col items-center min-w-[80px]">
-                <div class="w-16 h-16 bg-white rounded-full shadow-md flex items-center justify-center mb-2 text-2xl">🔌</div>
-                <span class="text-xs font-bold">أدوات</span>
+    </section>
+
+    <section id="vendor-page" class="hidden page-content min-h-screen bg-gray-100">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row gap-8">
+                
+                <aside class="w-full md:w-1/4 space-y-6">
+                    <div class="bg-white p-6 rounded-3xl shadow-sm border border-blue-100">
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl">👤</div>
+                            <h3 class="font-bold text-lg">متجر التاجر "أحمد"</h3>
+                            <p class="text-xs text-gray-400">عضو منذ 2026</p>
+                        </div>
+                        <hr class="my-4">
+                        <div class="space-y-4 text-sm">
+                            <div class="flex justify-between"><span>إجمالي المبيعات:</span> <span class="font-bold text-green-600" id="stat-sales">0 ج.س</span></div>
+                            <div class="flex justify-between"><span>عمولة الموقع (10%):</span> <span class="font-bold text-red-500" id="stat-comm">0 ج.س</span></div>
+                            <div class="flex justify-between text-blue-700 font-black border-t pt-2 text-md"><span>صافي أرباحك:</span> <span id="stat-net">0 ج.س</span></div>
+                        </div>
+                    </div>
+                </aside>
+
+                <main class="w-full md:w-3/4">
+                    <div class="bg-white rounded-3xl shadow-sm p-6 mb-8">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold">إدارة منتجاتك</h2>
+                            <button onclick="toggleAddForm()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold shadow-md">+ إضافة منتج جديد</button>
+                        </div>
+
+                        <div id="add-form" class="hidden bg-gray-50 p-6 rounded-2xl mb-8 border-2 border-dashed border-blue-200 animate__animated animate__fadeInDown">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <input type="text" id="v-title" placeholder="اسم المنتج" class="p-3 rounded-lg border-none ring-1 ring-gray-200">
+                                <input type="number" id="v-price" placeholder="سعر البيع لك (ج.س)" class="p-3 rounded-lg border-none ring-1 ring-gray-200">
+                                <select id="v-cat" class="p-3 rounded-lg border-none ring-1 ring-gray-100 font-bold">
+                                    <option value="phones">هواتف</option>
+                                    <option value="clothes">ملابس</option>
+                                    <option value="cars">سيارات</option>
+                                </select>
+                                <input type="text" id="v-img" placeholder="رابط الصورة" class="p-3 rounded-lg border-none ring-1 ring-gray-200">
+                            </div>
+                            <button onclick="saveProduct()" class="w-full mt-4 bg-green-600 text-white py-3 rounded-lg font-bold">حفظ ونشر الآن</button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right border-collapse">
+                                <thead>
+                                    <tr class="text-gray-400 text-sm border-b">
+                                        <th class="pb-3 pr-2">المنتج</th>
+                                        <th class="pb-3 text-center">السعر للجمهور</th>
+                                        <th class="pb-3 text-center">ربحك</th>
+                                        <th class="pb-3 text-left pl-2">الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="vendor-table-body">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </main>
             </div>
         </div>
     </section>
 
-    <div id="sub-filters" class="container mx-auto px-4 mb-6 flex gap-2 flex-wrap">
-        </div>
-
-    <main class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8" id="product-list">
-        </main>
-
-    <div id="vendor-panel" class="hidden fixed inset-0 z-[200] glass flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl p-8 animate__animated animate__slideInUp relative">
-            <button onclick="toggleVendor()" class="absolute top-6 left-6 text-gray-400">✖</button>
-            <h2 class="text-2xl font-black text-blue-900 mb-2">لوحة التاجر المركزية</h2>
-            <p class="text-gray-500 text-sm mb-8">أضف منتجاتك وسوف نقوم بحساب العمولات والضرائب تلقائياً.</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-4">
-                    <label class="block font-bold text-xs text-gray-400 uppercase">معلومات المنتج</label>
-                    <input type="text" id="v-title" placeholder="اسم المنتج الفاخر" class="w-full p-4 bg-gray-50 rounded-2xl border-none ring-1 ring-gray-100">
-                    <select id="v-category" onchange="updateSubOptions()" class="w-full p-4 bg-gray-50 rounded-2xl border-none ring-1 ring-gray-100">
-                        <option value="phones">هواتف</option>
-                        <option value="clothes">ملابس وأزياء</option>
-                        <option value="cars">سيارات ومحركات</option>
-                    </select>
-                    <input type="number" id="v-price-raw" placeholder="سعر التاجر (ج.س)" class="w-full p-4 bg-gray-50 rounded-2xl border-none ring-1 ring-gray-100">
-                </div>
-                <div class="space-y-4">
-                    <label class="block font-bold text-xs text-gray-400 uppercase">الوسائط والوصف</label>
-                    <input type="text" id="v-img-url" placeholder="رابط صورة المنتج" class="w-full p-4 bg-gray-50 rounded-2xl border-none ring-1 ring-gray-100">
-                    <textarea id="v-description" placeholder="وصف جذاب للمنتج..." class="w-full p-4 bg-gray-50 rounded-2xl border-none ring-1 ring-gray-100 h-[120px]"></textarea>
-                </div>
-            </div>
-            
-            <div class="mt-8 p-4 bg-yellow-50 rounded-2xl border border-yellow-200 flex items-center gap-4 text-xs text-yellow-800">
-                <span class="text-2xl">📉</span>
-                <p>نظام كوستي يحسب عمولة 10%. إذا وضعت السعر 1000، سيظهر للمشتري 1100. أنت تستلم 1000 كاملة.</p>
-            </div>
-
-            <button onclick="publishProduct()" class="w-full mt-6 bg-blue-900 text-white py-5 rounded-2xl font-black shadow-xl hover:bg-blue-800 transition-all">نشر المنتج في السوق</button>
-        </div>
-    </div>
-
-    <div id="toast" class="fixed top-24 right-4 bg-white shadow-2xl p-4 rounded-2xl border-r-4 border-green-500 hidden z-[300] animate__animated animate__fadeInRight">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-xl">🛒</div>
-            <div>
-                <p id="toast-msg" class="text-xs font-bold text-gray-800"></p>
-                <p class="text-[10px] text-gray-400">منذ قليل في كوستي</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="fixed bottom-0 inset-x-0 glass border-t border-white/20 p-4 z-[150] flex justify-between items-center px-8">
-        <div>
-            <p class="text-[10px] text-gray-400 font-bold uppercase">إجمالي السلة</p>
-            <p id="total-price" class="text-xl font-black text-blue-900">0 ج.س</p>
-        </div>
-        <button onclick="checkout()" class="bg-green-500 text-white px-8 py-3 rounded-2xl font-black shadow-lg shadow-green-200 flex items-center gap-2">
-            إتمام الطلب
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.891 11.891-11.891 3.181 0 6.167 1.24 8.407 3.481 2.242 2.242 3.483 5.23 3.483 8.411 0 6.556-5.332 11.891-11.891 11.891-2.01 0-3.991-.51-5.747-1.474l-6.342 1.7zm6.349-4.116l.456.271c1.511.903 3.243 1.38 5.033 1.38 5.453 0 9.891-4.438 9.891-9.891 0-2.646-1.03-5.132-2.901-7.003-1.871-1.871-4.357-2.901-7.003-2.901-5.453 0-9.891 4.438-9.891 9.891 0-2.13.593 4.21 1.717 6.009l.298.476-1.12 4.09 4.18-.11z"/></svg>
-        </button>
+    <div id="shop-bar" class="fixed bottom-0 inset-x-0 bg-white/90 backdrop-blur border-t p-4 flex justify-between items-center px-8 shadow-2xl">
+        <div><p class="text-xs text-gray-400 uppercase font-bold">السعر الإجمالي</p><p id="total-price" class="text-xl font-black text-blue-900">0 ج.س</p></div>
+        <button onclick="sendWA()" class="bg-green-500 text-white px-10 py-3 rounded-2xl font-black">اطلب الآن (واتساب)</button>
     </div>
 
     <script>
-        // داتابيس المحترفين
-        let database = [
-            { id: 1, title: "ساعة أبل الترا 2", price: 850, cat: "phones", sub: "إكسسوارات", img: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?w=500" },
-            { id: 2, title: "حذاء نايك إير جوردان", price: 120, cat: "clothes", sub: "أحذية", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500" },
-            { id: 3, title: "قميص رسمي تركي", price: 45, cat: "clothes", sub: "ملابس", img: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=500" },
-            { id: 4, title: "تويوتا كامري 2023", price: 15000, cat: "cars", sub: "سيدان", img: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=500" }
+        // داتابيس مركزية
+        let products = [
+            { id: 1, title: "آيفون 13 عادي", price: 500000, cat: "phones", img: "https://m.media-amazon.com/images/I/71ZOtNdaZCL._AC_SL1500_.jpg", owner: "أحمد" },
+            { id: 2, title: "تيشيرت بولو", price: 15000, cat: "clothes", img: "https://m.media-amazon.com/images/I/81Pj6pYJcFL._AC_UX679_.jpg", owner: "أحمد" }
         ];
 
         let cart = [];
-        const commission = 1.10; // 10% زيادة
+        const commission = 0.10;
 
-        function drawProducts(items) {
-            const list = document.getElementById('product-list');
-            list.innerHTML = '';
-            items.forEach(p => {
-                const displayPrice = Math.round(p.price * commission);
-                list.innerHTML += `
-                    <div class="product-card group animate__animated animate__zoomIn">
-                        <div class="relative overflow-hidden rounded-[2.5rem] shadow-sm bg-white p-3 border border-white">
-                            <img src="${p.img}" class="product-img w-full h-48 object-cover rounded-[2rem] transition-transform duration-500">
-                            <div class="mt-4 px-2">
-                                <span class="text-[10px] font-black text-blue-500 uppercase tracking-widest">${p.sub}</span>
-                                <h4 class="font-bold text-gray-800 text-sm truncate">${p.title}</h4>
-                                <div class="flex justify-between items-center mt-3">
-                                    <p class="font-black text-blue-900">${displayPrice} <small class="text-[10px]">ج.س</small></p>
-                                    <button onclick="addToCart(${p.id})" class="bg-blue-900 text-white p-2 rounded-xl active:scale-90 transition-all">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    </button>
-                                </div>
-                            </div>
+        function showPage(page) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`${page}-page`).classList.remove('hidden');
+            document.getElementById('shop-bar').style.display = (page === 'user') ? 'flex' : 'none';
+            if(page === 'vendor') updateVendorUI();
+            else updateShopUI();
+        }
+
+        // --- وظائف المتجر ---
+        function updateShopUI(list = products) {
+            const grid = document.getElementById('shop-grid');
+            grid.innerHTML = '';
+            list.forEach(p => {
+                const finalP = Math.round(p.price * (1 + commission));
+                grid.innerHTML += `
+                    <div class="bg-white p-3 rounded-3xl shadow-sm hover:shadow-lg transition-all border border-gray-100">
+                        <img src="${p.img}" class="w-full h-40 object-cover rounded-2xl mb-3">
+                        <h4 class="font-bold text-sm truncate">${p.title}</h4>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-blue-700 font-black">${finalP.toLocaleString()} ج.س</span>
+                            <button onclick="addToCart(${p.id})" class="bg-blue-50 text-blue-600 p-2 rounded-lg font-black">+</button>
                         </div>
-                    </div>
-                `;
+                    </div>`;
             });
         }
-
-        // نظام الإشعارات الوهمية لزيادة حماس المشترين
-        function fakeNotif() {
-            const names = ["أحمد", "سارة", "محمد", "عثمان", "إخلاص"];
-            const items = ["آيفون", "حذاء", "ساعة", "طقم ملابس"];
-            const name = names[Math.floor(Math.random()*names.length)];
-            const item = items[Math.floor(Math.random()*items.length)];
-            
-            document.getElementById('toast-msg').innerText = `قام ${name} بطلب ${item} الآن`;
-            const t = document.getElementById('toast');
-            t.classList.remove('hidden');
-            setTimeout(() => t.classList.add('hidden'), 4000);
-        }
-        setInterval(fakeNotif, 15000);
 
         function addToCart(id) {
-            const item = database.find(p => p.id === id);
-            cart.push(item);
-            updateCart();
-        }
-
-        function updateCart() {
-            document.getElementById('cart-badge').innerText = cart.length;
+            const p = products.find(x => x.id === id);
+            cart.push(p);
             let total = 0;
-            cart.forEach(p => total += Math.round(p.price * commission));
-            document.getElementById('total-price').innerText = total + " ج.س";
+            cart.forEach(x => total += Math.round(x.price * (1+commission)));
+            document.getElementById('total-price').innerText = total.toLocaleString() + " ج.س";
         }
 
-        function toggleVendor() {
-            document.getElementById('vendor-panel').classList.toggle('hidden');
-        }
-
-        function publishProduct() {
-            const title = document.getElementById('v-title').value;
-            const price = parseFloat(document.getElementById('v-price-raw').value);
-            const cat = document.getElementById('v-category').value;
-            const img = document.getElementById('v-img-url').value || "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500";
-
-            if(!title || !price) return alert("يا تاجر، المعلومات ناقصة!");
-
-            const newProduct = {
-                id: Date.now(),
-                title: title,
-                price: price,
-                cat: cat,
-                sub: "منتج جديد",
-                img: img
-            };
-
-            database.unshift(newProduct);
-            drawProducts(database);
-            toggleVendor();
-            alert("تم النشر بنجاح! سيراه جميع أهل كوستي الآن.");
-        }
-
-        function filterBy(cat) {
-            if(cat === 'all') drawProducts(database);
-            else drawProducts(database.filter(p => p.cat === cat));
-        }
-
-        function checkout() {
-            if(cart.length === 0) return alert("سلتك فارغة، تسوق أولاً!");
-            let msg = "🛒 *طلب جديد من كوستي ماركت*\n\n";
+        function sendWA() {
+            if(cart.length === 0) return alert("سلتك فارغة!");
+            let msg = "🛒 *طلب جديد من كوستي برو*\n\n";
             let total = 0;
-            cart.forEach((p, i) => {
-                const finalP = Math.round(p.price * commission);
-                msg += `${i+1}. ${p.title} - ${finalP} ج.س\n`;
+            cart.forEach(p => {
+                const finalP = Math.round(p.price * (1+commission));
+                msg += `- ${p.title}: (${finalP.toLocaleString()} ج.س)\n`;
                 total += finalP;
             });
-            msg += `\n💰 *الإجمالي النهائي: ${total} ج.س*`;
+            msg += `\n💰 *الإجمالي: ${total.toLocaleString()} ج.س*`;
             window.open(`https://wa.me/249123456789?text=${encodeURIComponent(msg)}`);
         }
 
+        // --- وظائف التاجر ---
+        function toggleAddForm() { document.getElementById('add-form').classList.toggle('hidden'); }
+
+        function updateVendorUI() {
+            const myProducts = products.filter(p => p.owner === "أحمد");
+            const tbody = document.getElementById('vendor-table-body');
+            tbody.innerHTML = '';
+            
+            let totalSales = 0;
+            myProducts.forEach(p => {
+                const consumerPrice = Math.round(p.price * (1 + commission));
+                totalSales += consumerPrice;
+                tbody.innerHTML += `
+                    <tr class="border-b text-sm">
+                        <td class="py-4 flex items-center gap-2">
+                            <img src="${p.img}" class="w-8 h-8 rounded-lg object-cover">
+                            <span class="font-bold">${p.title}</span>
+                        </td>
+                        <td class="text-center font-bold text-blue-600">${consumerPrice.toLocaleString()}</td>
+                        <td class="text-center font-bold text-green-600">${p.price.toLocaleString()}</td>
+                        <td class="text-left"><button onclick="deleteProduct(${p.id})" class="text-red-400 hover:text-red-600">حذف</button></td>
+                    </tr>`;
+            });
+
+            // تحديث البطاقة الجانبية
+            document.getElementById('stat-sales').innerText = totalSales.toLocaleString() + " ج.س";
+            document.getElementById('stat-comm').innerText = Math.round(totalSales * 0.1).toLocaleString() + " ج.س";
+            document.getElementById('stat-net').innerText = (totalSales - Math.round(totalSales * 0.1)).toLocaleString() + " ج.س";
+        }
+
+        function saveProduct() {
+            const title = document.getElementById('v-title').value;
+            const price = parseFloat(document.getElementById('v-price').value);
+            const cat = document.getElementById('v-cat').value;
+            const img = document.getElementById('v-img').value || "https://via.placeholder.com/150";
+
+            if(title && price) {
+                products.push({ id: Date.now(), title, price, cat, img, owner: "أحمد" });
+                updateVendorUI();
+                toggleAddForm();
+                alert("تم إدراج المنتج بنجاح!");
+            }
+        }
+
+        function deleteProduct(id) {
+            products = products.filter(p => p.id !== id);
+            updateVendorUI();
+        }
+
+        function filterBy(cat) {
+            if(cat === 'all') updateShopUI();
+            else updateShopUI(products.filter(p => p.cat === cat));
+        }
+
         // تشغيل أولي
-        drawProducts(database);
+        updateShopUI();
     </script>
 </body>
 </html>
