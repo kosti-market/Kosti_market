@@ -2,278 +2,299 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kosti Market - سوق كوستي الإلكتروني</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Kosti Market | SHEIN Style</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --milky: #FDFBF7;
-      --white: #FFFFFF;
-      --beige: #E8DFD1;
-      --brown: #A38B70;
-      --text: #2C2C2C;
-      --shadow: 0 4px 20px rgba(163, 139, 112, 0.1);
+      --shein-black: #222222;
+      --shein-red: #fa6338;
+      --shein-gray: #f7f7f7;
+      --text-gray: #666666;
+      --border-color: #eeeeee;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, 'Cairo', sans-serif; }
-    body { background: var(--milky); color: var(--text); line-height: 1.6; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+    body { background-color: #fff; color: var(--shein-black); padding-bottom: 70px; }
+
+    /* Header & Search */
+    header {
+      position: sticky; top: 0; z-index: 1000;
+      background: #fff; border-bottom: 1px solid var(--border-color);
+      padding: 10px 15px;
+    }
+    .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .logo { font-size: 22px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
     
-    /* Header */
-    header { background: var(--white); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 100; }
-    .header-content { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; }
-    .logo { font-size: 24px; font-weight: 800; color: var(--brown); }
-    .search-bar { flex: 1; max-width: 500px; margin: 0 20px; position: relative; }
-    .search-bar input { width: 100%; padding: 12px 20px; border: 2px solid var(--beige); border-radius: 50px; background: var(--milky); transition: 0.3s; }
-    .search-bar input:focus { outline: none; border-color: var(--brown); }
-    .nav-links a { margin: 0 12px; color: var(--text); text-decoration: none; font-weight: 600; transition: 0.3s; }
-    .nav-links a:hover { color: var(--brown); }
+    .search-container {
+      background: var(--shein-gray);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+    }
+    .search-container input {
+      background: transparent; border: none; outline: none;
+      width: 100%; font-size: 14px; margin-right: 8px;
+    }
 
-    /* Flash Sales */
-    .flash-sales { background: linear-gradient(135deg, var(--brown), #8B7355); color: white; padding: 20px 0; margin: 24px 0; border-radius: 20px; }
-    .flash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .countdown { display: flex; gap: 8px; }
-    .countdown-item { background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 12px; text-align: center; min-width: 50px; }
-    .countdown-item span { display: block; font-size: 20px; font-weight: 700; }
-    .countdown-item small { font-size: 10px; opacity: 0.8; }
+    /* Horizontal Categories */
+    .cat-scroll {
+      display: flex; overflow-x: auto; white-space: nowrap;
+      padding: 15px 10px; gap: 15px; scrollbar-width: none;
+    }
+    .cat-scroll::-webkit-scrollbar { display: none; }
+    .cat-item { text-align: center; min-width: 70px; }
+    .cat-icon {
+      width: 55px; height: 55px; background: var(--shein-gray);
+      border-radius: 50%; margin-bottom: 5px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .cat-item span { font-size: 12px; color: var(--shein-black); }
 
-    /* Sections */
-    .section { margin: 40px 0; }
-    .section-title { font-size: 28px; font-weight: 700; margin-bottom: 20px; color: var(--brown); }
-    .categories { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .category-card { background: var(--white); border-radius: 20px; padding: 30px 20px; text-align: center; box-shadow: var(--shadow); transition: 0.3s; cursor: pointer; }
-    .category-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(163, 139, 112, 0.15); }
+    /* Flash Sale (SHEIN Style) */
+    .flash-sale-box {
+      padding: 15px; background: #fff;
+    }
+    .flash-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 12px;
+    }
+    .flash-title { font-weight: 700; font-size: 18px; display: flex; align-items: center; gap: 5px; }
+    .timer { display: flex; gap: 4px; }
+    .timer div { background: #000; color: #fff; padding: 2px 4px; border-radius: 2px; font-size: 12px; }
 
-    /* Products Grid */
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
-    .product-card { background: var(--white); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: 0.3s; cursor: pointer; position: relative; }
-    .product-card:hover { transform: translateY(-5px); }
-    .product-img { position: relative; height: 280px; background: var(--milky); }
+    /* Products Grid (2 Columns) */
+    .products-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 10px; padding: 10px;
+    }
+    .product-card {
+      background: #fff; position: relative;
+      margin-bottom: 15px;
+    }
+    .product-img {
+      width: 100%; aspect-ratio: 3/4;
+      background: var(--shein-gray);
+      position: relative; overflow: hidden;
+    }
     .product-img img { width: 100%; height: 100%; object-fit: cover; }
-    .sale-badge { position: absolute; top: 12px; right: 12px; background: var(--brown); color: white; padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; }
-    .product-info { padding: 16px; }
-    .product-info h3 { font-size: 16px; margin-bottom: 4px; height: 40px; overflow: hidden; }
-    .store { color: #888; font-size: 14px; margin-bottom: 8px; }
-    .price { display: flex; align-items: center; gap: 8px; }
-    .new-price { font-size: 18px; font-weight: 700; color: var(--brown); }
-    .old-price { font-size: 14px; color: #999; text-decoration: line-through; }
+    .wishlist-icon {
+      position: absolute; bottom: 10px; left: 10px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 50%; width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .promo-tag {
+      position: absolute; top: 0; right: 0;
+      background: var(--shein-red); color: white;
+      font-size: 11px; padding: 2px 6px;
+    }
+    .product-info { padding: 8px 4px; }
+    .product-title {
+      font-size: 13px; color: var(--text-gray);
+      display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+      overflow: hidden; margin-bottom: 4px;
+    }
+    .price-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .current-price { font-weight: 700; font-size: 16px; color: #000; }
+    .old-price { font-size: 12px; color: #999; text-decoration: line-through; }
 
-    /* Quick View Modal */
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; }
-    .modal-content { background: var(--white); border-radius: 24px; max-width: 800px; width: 90%; max-height: 90vh; overflow-y: auto; position: relative; }
-    .close { position: absolute; top: 16px; left: 16px; font-size: 28px; cursor: pointer; color: var(--brown); z-index: 10; }
-    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 24px; }
-    .modal-body img { width: 100%; border-radius: 16px; }
-    .whatsapp-btn { background: #25D366; color: white; padding: 14px; border-radius: 12px; text-align: center; text-decoration: none; display: block; margin-top: 12px; font-weight: 600; }
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed; bottom: 0; width: 100%;
+      background: #fff; border-top: 1px solid var(--border-color);
+      display: flex; justify-content: space-around; padding: 10px 0;
+      z-index: 2000;
+    }
+    .nav-btn { text-align: center; color: var(--shein-black); text-decoration: none; flex: 1; }
+    .nav-btn svg { width: 22px; height: 22px; margin-bottom: 3px; }
+    .nav-btn p { font-size: 10px; font-weight: 600; }
+
+    /* Modal Quick View */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 3000; align-items: flex-end;
+    }
+    .modal-content {
+      background: #fff; width: 100%; border-radius: 20px 20px 0 0;
+      padding: 20px; max-height: 85vh; overflow-y: auto;
+    }
+    .buy-btn {
+      background: var(--shein-black); color: white; width: 100%;
+      padding: 15px; border: none; margin-top: 15px; font-weight: 700;
+    }
 
     /* Floating WhatsApp */
-    .floating-wa { position: fixed; bottom: 24px; left: 24px; background: var(--brown); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); z-index: 1000; }
-    .floating-wa svg { width: 32px; height: 32px; fill: white; }
-
-    /* Loading & Empty States */
-    .loading, .empty, .error { text-align: center; padding: 60px 20px; color: #888; grid-column: 1/-1; }
-    .skeleton { background: linear-gradient(90deg, var(--milky) 25%, var(--beige) 50%, var(--milky) 75%); background-size: 200% 100%; animation: loading 1.5s infinite; border-radius: 20px; height: 360px; }
-    @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header-content { flex-wrap: wrap; }
-      .search-bar { order: 3; width: 100%; margin: 12px 0 0 0; max-width: 100%; }
-      .modal-body { grid-template-columns: 1fr; }
-      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+    .wa-float {
+      position: fixed; bottom: 85px; left: 20px;
+      background: #25D366; width: 50px; height: 50px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 1500;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <div class="container">
-      <div class="header-content">
-        <div class="logo">Kosti Market</div>
-        <div class="search-bar">
-          <input type="text" placeholder="ابحث عن منتجات، متاجر..." id="search-input">
-        </div>
-        <nav class="nav-links">
-          <a href="#vendor">لوحة التاجر</a>
-          <a href="#cart">السلة</a>
-          <a href="#login">دخول</a>
-        </nav>
+    <div class="top-bar">
+      <div class="logo">SHEIN<span>.clone</span></div>
+      <div style="display: flex; gap: 15px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
       </div>
+    </div>
+    <div class="search-container">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      <input type="text" id="search-input" placeholder="اكتشف أحدث صيحات الموضة...">
     </div>
   </header>
 
-  <main class="container">
-    <!-- Flash Sales مع عداد تنازلي -->
-    <section class="flash-sales">
-      <div class="container">
-        <div class="flash-header">
-          <h2>⚡ عروض ستنتهي قريباً</h2>
-          <div class="countdown" id="countdown">
-            <div class="countdown-item"><span id="hours">02</span><small>ساعة</small></div>
-            <div class="countdown-item"><span id="minutes">34</span><small>دقيقة</small></div>
-            <div class="countdown-item"><span id="seconds">12</span><small>ثانية</small></div>
-          </div>
+  <div class="cat-scroll">
+    <div class="cat-item" onclick="filterCat('all')"><div class="cat-icon">⭐</div><span>الكل</span></div>
+    <div class="cat-item" onclick="filterCat('clothes')"><div class="cat-icon">👗</div><span>ملابس</span></div>
+    <div class="cat-item" onclick="filterCat('accessories')"><div class="cat-icon">👜</div><span>اكسسوار</span></div>
+    <div class="cat-item" onclick="filterCat('phones')"><div class="cat-icon">📱</div><span>إلكترونيات</span></div>
+    <div class="cat-item" onclick="filterCat('home')"><div class="cat-icon">🏠</div><span>منزل</span></div>
+  </div>
+
+  <main>
+    <section class="flash-sale-box">
+      <div class="flash-header">
+        <div class="flash-title">⚡ FLASH SALE</div>
+        <div class="timer" id="timer">
+          <div id="h">00</div>:<div id="m">00</div>:<div id="s">00</div>
         </div>
-        <div id="flash-products" class="products-grid"></div>
       </div>
+      <div id="flash-products" class="products-grid">
+        </div>
     </section>
 
-    <!-- الأقسام -->
-    <section class="section">
-      <h2 class="section-title">تسوق حسب القسم</h2>
-      <div class="categories">
-        <div class="category-card" data-category="clothes"><h3>👗 ملابس</h3><p>أحدث صيحات الموضة</p></div>
-        <div class="category-card" data-category="accessories"><h3>👜 اكسسوارات</h3><p>شنط، ساعات، مجوهرات</p></div>
-        <div class="category-card" data-category="phones"><h3>📱 تلفونات</h3><p>أجهزة واكسسوارات</p></div>
-        <div class="category-card" data-category="cars"><h3>🚗 سيارات</h3><p>قطع غيار وكماليات</p></div>
-      </div>
-    </section>
+    <hr style="border: 4px solid var(--shein-gray); border-none;">
 
-    <!-- For You -->
-    <section class="section">
-      <h2 class="section-title">مختارة لك</h2>
-      <div id="for-you-products" class="products-grid"></div>
-    </section>
-
-    <!-- كل المنتجات مع Infinite Scroll -->
-    <section class="section">
-      <h2 class="section-title">كل المنتجات</h2>
-      <div id="products-grid" class="products-grid"></div>
-      <div id="loading-more" style="display:none; text-align:center; padding:20px;">جاري تحميل المزيد...</div>
+    <section style="padding: 15px 0;">
+      <h2 style="text-align: center; font-size: 16px; margin-bottom: 15px; letter-spacing: 2px;">موصى به لك</h2>
+      <div id="products-grid" class="products-grid">
+        </div>
+      <div id="loading" style="text-align: center; padding: 20px; font-size: 12px; color: #999;">جاري التحميل...</div>
     </section>
   </main>
 
-  <!-- زر واتساب عائم -->
-  <a href="https://wa.me/249900623733?text=مرحبا من Kosti Market" class="floating-wa" target="_blank">
-    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-btn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><p>الرئيسية</p></a>
+    <a href="#" class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><p>الفئات</p></a>
+    <a href="#" class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path></svg><p>السلة</p></a>
+    <a href="#" class="nav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg><p>أنا</p></a>
+  </nav>
+
+  <div id="modal" class="modal">
+    <div class="modal-content" id="modal-body"></div>
+  </div>
+
+  <a href="https://wa.me/249900623733" class="wa-float">
+    <svg width="25" height="25" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
   </a>
 
-  <!-- Quick View Modal -->
-  <div id="quick-view-modal" class="modal"></div>
-
-  <!-- Supabase + App Logic -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // 1. بيانات Supabase حقتك
     const SUPABASE_URL = 'https://bxbglomvulnzehruubdh.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4Ymdsb212dWxuemVocnV1YmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5Mzg5MDYsImV4cCI6MjA5MjUxNDkwNn0.rqIZHvP47QugH9vG0LW8OkkmAVYEzhOwv-VUKJuEqOY';
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    let page = 0;
-    const PAGE_SIZE = 12;
-    let isLoading = false;
-    let allProductsLoaded = false;
+    let products = [];
+    
+    // 1. Fetch Data
+    async function fetchProducts() {
+      const { data, error } = await supabase
+        .from('products')
+        .select(`*, vendors(store_name)`)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
 
-    // 2. Flash Sales Countdown
-    function startCountdown() {
-      let time = 2 * 3600 + 34 * 60 + 12; // 02:34:12
-      setInterval(() => {
-        if (time <= 0) return;
-        time--;
-        document.getElementById('hours').textContent = String(Math.floor(time / 3600)).padStart(2, '0');
-        document.getElementById('minutes').textContent = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
-        document.getElementById('seconds').textContent = String(time % 60).padStart(2, '0');
-      }, 1000);
+      if (error) { console.log(error); return; }
+      products = data;
+      renderProducts(products);
+      renderFlashSale(products.slice(0, 4));
     }
 
-    // 3. تحميل المنتجات من Supabase
-    async function loadProducts(isFlash = false, isForYou = false) {
-      if (isLoading || allProductsLoaded) return;
-      isLoading = true;
-      
-      const grid = isFlash ? document.getElementById('flash-products') : 
-                   isForYou ? document.getElementById('for-you-products') : 
-                   document.getElementById('products-grid');
-      
-      if (!isFlash && !isForYou) document.getElementById('loading-more').style.display = 'block';
-
-      let query = supabase.from('products').select(`*, vendors(store_name)`).eq('is_active', true);
-      
-      if (isFlash) query = query.not('sale_price', 'is', null).limit(4);
-      else if (isForYou) query = query.eq('is_featured', true).limit(4);
-      else query = query.range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1).order('created_at', { ascending: false });
-
-      const { data: products, error } = await query;
-      
-      if (error) {
-        console.error(error);
-        if (!isFlash && !isForYou) grid.innerHTML = '<div class="error">خطأ في التحميل</div>';
-        isLoading = false;
-        return;
-      }
-
-      if (products.length === 0 && !isFlash && !isForYou) {
-        allProductsLoaded = true;
-        document.getElementById('loading-more').innerHTML = 'لا توجد منتجات أخرى';
-        isLoading = false;
-        return;
-      }
-
-      const productsHTML = products.map(p => `
-        <div class="product-card" onclick='openQuickView(${JSON.stringify(p).replace(/'/g, "&apos;")})'>
+    // 2. Render UI
+    function renderProducts(list) {
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = list.map(p => `
+        <div class="product-card" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&apos;")})'>
           <div class="product-img">
-            <img src="${p.images?.[0] || 'https://via.placeholder.com/300x300.png/FDFBF7/A38B70?text=Kosti+Market'}" alt="${p.title}" loading="lazy">
-            ${p.sale_price ? '<span class="sale-badge">تخفيض</span>' : ''}
+            <img src="${p.images?.[0] || 'https://via.placeholder.com/300x400'}" loading="lazy">
+            <div class="wishlist-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#222" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            </div>
+            ${p.sale_price ? `<div class="promo-tag">خصم %${Math.round(((p.price-p.sale_price)/p.price)*100)}</div>` : ''}
           </div>
           <div class="product-info">
-            <h3>${p.title}</h3>
-            <p class="store">${p.vendors?.store_name || 'Kosti Market'}</p>
-            <div class="price">
-              ${p.sale_price ? `<span class="new-price">${p.sale_price} ج.س</span> <span class="old-price">${p.price}</span>` : `<span class="new-price">${p.price} ج.س</span>`}
+            <p class="product-title">${p.title}</p>
+            <div class="price-row">
+              <span class="current-price">${p.sale_price || p.price} ج.س</span>
+              ${p.sale_price ? `<span class="old-price">${p.price} ج.س</span>` : ''}
             </div>
           </div>
         </div>
       `).join('');
-
-      if (isFlash || isForYou) {
-        grid.innerHTML = productsHTML;
-      } else {
-        grid.innerHTML += productsHTML;
-        page++;
-        document.getElementById('loading-more').style.display = 'none';
-      }
-      
-      isLoading = false;
+      document.getElementById('loading').style.display = 'none';
     }
 
-    // 4. Quick View
-    window.openQuickView = function(product) {
-      const modal = document.getElementById('quick-view-modal');
-      modal.innerHTML = `
-        <div class="modal-content">
-          <span class="close" onclick="this.parentElement.parentElement.style.display='none'">&times;</span>
-          <div class="modal-body">
-            <img src="${product.images?.[0] || ''}" alt="${product.title}">
-            <div>
-              <h2>${product.title}</h2>
-              <p style="color:#888; margin:8px 0;">${product.vendors?.store_name || ''}</p>
-              <div class="price" style="font-size:24px; margin:16px 0;">
-                ${product.sale_price ? `<span class="new-price">${product.sale_price} ج.س</span> <span class="old-price">${product.price}</span>` : `<span class="new-price">${product.price} ج.س</span>`}
-              </div>
-              <button onclick="addToCart('${product.id}')" style="width:100%; padding:14px; background:var(--brown); color:white; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer;">أضف للسلة</button>
-              <a href="https://wa.me/249900623733?text=عايز ${encodeURIComponent(product.title)} - ${window.location.href}" target="_blank" class="whatsapp-btn">اسأل بالواتساب</a>
-            </div>
+    function renderFlashSale(list) {
+      document.getElementById('flash-products').innerHTML = list.map(p => `
+        <div class="product-card" onclick='openModal(${JSON.stringify(p).replace(/'/g, "&apos;")})'>
+          <div class="product-img">
+            <img src="${p.images?.[0]}" loading="lazy">
+            <div class="promo-tag">محدود</div>
           </div>
+          <div class="product-info">
+            <div class="current-price" style="color:var(--shein-red)">${p.sale_price || p.price} ج.س</div>
+          </div>
+        </div>
+      `).slice(0, 4).join('');
+    }
+
+    // 3. Modal Logic
+    window.openModal = (p) => {
+      const modal = document.getElementById('modal');
+      const body = document.getElementById('modal-body');
+      body.innerHTML = `
+        <div style="text-align:center">
+          <img src="${p.images?.[0]}" style="width:100%; border-radius:8px;">
+          <h2 style="font-size:18px; margin:15px 0;">${p.title}</h2>
+          <p style="color:var(--shein-red); font-size:24px; font-weight:800;">${p.sale_price || p.price} ج.س</p>
+          <p style="color:#888; font-size:14px; margin-bottom:20px;">المتجر: ${p.vendors?.store_name || 'Kosti Market'}</p>
+          <button class="buy-btn" onclick="window.open('https://wa.me/249900623733?text=طلب منتج: ${p.title}')">أضف إلى حقيبة التسوق</button>
+          <p onclick="document.getElementById('modal').style.display='none'" style="margin-top:15px; font-size:14px; text-decoration:underline;">إغلاق</p>
         </div>
       `;
       modal.style.display = 'flex';
+    };
+
+    // 4. Timer Logic
+    function startTimer() {
+      let h=2, m=45, s=30;
+      setInterval(() => {
+        s--; if(s<0){s=59; m--;} if(m<0){m=59; h--;}
+        document.getElementById('h').innerText = String(h).padStart(2,'0');
+        document.getElementById('m').innerText = String(m).padStart(2,'0');
+        document.getElementById('s').innerText = String(s).padStart(2,'0');
+      }, 1000);
     }
 
-    // 5. Infinite Scroll
-    window.addEventListener('scroll', () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 500) {
-        loadProducts();
-      }
-    });
+    // 5. Search & Filter
+    document.getElementById('search-input').oninput = (e) => {
+      const val = e.target.value.toLowerCase();
+      const filtered = products.filter(p => p.title.toLowerCase().includes(val));
+      renderProducts(filtered);
+    };
 
-    // 6. إغلاق المودال لما تضغط برة
-    window.onclick = (e) => {
-      if (e.target.className === 'modal') e.target.style.display = 'none';
-    }
+    window.onclick = (e) => { if(e.target.id == 'modal') e.target.style.display='none'; }
 
-    // 7. تشغيل كل شي لما الصفحة تحمل
+    // Init
     document.addEventListener('DOMContentLoaded', () => {
-      startCountdown();
-      loadProducts(true); // Flash Sales
-      loadProducts(false, true); // For You
-      loadProducts(); // All Products
+      fetchProducts();
+      startTimer();
     });
   </script>
 </body>
