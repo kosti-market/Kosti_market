@@ -3,43 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KOSTI MARKET ELITE 2026</title>
+    <title>KOSTI MARKET | SUBSCRIPTIONS 2026</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600;900&display=swap" rel="stylesheet">
     <style>
         :root { --p: #2563eb; --glass: rgba(255, 255, 255, 0.85); }
-        body { font-family: 'Cairo', sans-serif; background: #f0f4f9; color: #1e293b; transition: 0.4s; }
+        body { font-family: 'Cairo', sans-serif; background: #f0f4f9; color: #1e293b; }
         .glass-panel { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.5); border-radius: 2.5rem; }
-        
-        /* Stories */
-        .story-circle { min-width: 70px; height: 70px; border: 3px solid #2563eb; border-radius: 50%; padding: 2px; cursor: pointer; flex-shrink: 0; }
-        .story-circle img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-
-        .bento-item { transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .bento-item:hover { transform: translateY(-8px); shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        
         .section-view { display: none; opacity: 0; transform: scale(0.98); transition: 0.4s; }
         .section-view.active { display: block; opacity: 1; transform: scale(1); }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        #notif { position: fixed; top: 110px; left: 20px; z-index: 1000; transform: translateX(-150%); transition: 0.6s; }
-        #notif.show { transform: translateX(0); }
+        .tier-card { transition: 0.3s; cursor: pointer; border: 2px solid transparent; }
+        .tier-card.selected { border-color: #2563eb; background: #eff6ff; }
     </style>
 </head>
 <body class="pb-32">
 
-    <div id="notif" class="glass-panel p-4 flex items-center gap-3 shadow-2xl border-blue-100 max-w-xs">
-        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">🔔</div>
-        <div>
-            <p id="notif-text" class="text-xs font-bold text-blue-900 italic">باع تاجر 'كردفان' لابتوب الآن!</p>
-        </div>
-    </div>
-
     <header class="sticky top-4 z-[500] container mx-auto px-4">
         <nav class="glass-panel p-3 flex justify-between items-center shadow-xl">
-            <h1 class="text-2xl font-[900] text-blue-600 px-4 tracking-tighter" onclick="showSection('all')">KOSTI.M</h1>
-            <div class="flex gap-2">
-                <button onclick="showSection('vendor')" class="bg-blue-600 text-white px-6 py-2 rounded-2xl font-black shadow-lg shadow-blue-200 hover:scale-105 transition">لوحة التاجر</button>
+            <h1 class="text-2xl font-[900] text-blue-600 px-4" onclick="showSection('all')">KOSTI.M</h1>
+            <div id="user-badge" class="bg-blue-100 text-blue-700 px-4 py-2 rounded-2xl text-xs font-black">
+                باقة: مبتدئ (10% عمولة)
             </div>
         </nav>
     </header>
@@ -47,50 +30,55 @@
     <main class="container mx-auto px-4 mt-8">
         
         <div id="section-all" class="section-view active">
-            <section class="mb-8 overflow-x-auto no-scrollbar flex gap-4 py-2" id="story-container">
-                <div class="flex flex-col items-center gap-1">
-                    <div class="story-circle border-gray-300 flex items-center justify-center text-2xl bg-white" onclick="showSection('vendor')">+</div>
-                    <span class="text-[9px] font-bold">إضافة</span>
-                </div>
-            </section>
-
-            <div class="glass-panel p-8 bg-gradient-to-br from-blue-700 to-indigo-900 text-white relative overflow-hidden mb-10">
-                <div class="relative z-10">
-                    <h2 class="text-3xl font-black">سوق كوستي الذكي 🇸🇩</h2>
-                    <p class="mt-2 opacity-80 font-bold">أول تجربة تسوق تفاعلية في النيل الأبيض لعام 2026</p>
-                </div>
-                <div class="absolute -right-10 -bottom-10 text-9xl opacity-10 font-black italic">NEW</div>
-            </div>
-
-            <h3 class="text-2xl font-black mb-6 flex items-center gap-2">✨ وصل حديثاً</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6" id="grid-all">
                 </div>
         </div>
 
         <div id="section-vendor" class="section-view">
-            <div class="max-w-xl mx-auto glass-panel p-8 shadow-2xl">
-                <h2 class="text-2xl font-black mb-8 border-b pb-4">📦 إضافة معروض جديد</h2>
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-bold mb-2 mr-2">اسم المنتج</label>
-                        <input type="text" id="p-name" placeholder="مثلاً: آيفون 15 برو" class="w-full p-4 glass-panel bg-white/50 border-none outline-none ring-1 ring-blue-100">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <div class="glass-panel p-8 shadow-lg">
+                    <h2 class="text-xl font-black mb-6 flex items-center gap-2">💎 اختر باقة اشتراكك</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div onclick="setTier('free', 10, 'مبتدئ')" id="tier-free" class="tier-card glass-panel p-5 text-center selected">
+                            <span class="text-2xl">🌱</span>
+                            <h4 class="font-black mt-2">مبتدئ</h4>
+                            <p class="text-[10px] text-gray-500">عمولة 10%</p>
+                            <p class="font-bold text-blue-600 mt-2 italic">مجاني</p>
+                        </div>
+                        <div onclick="setTier('pro', 5, 'نشط')" id="tier-pro" class="tier-card glass-panel p-5 text-center">
+                            <span class="text-2xl">🔥</span>
+                            <h4 class="font-black mt-2">نشط</h4>
+                            <p class="text-[10px] text-gray-500">عمولة 5%</p>
+                            <p class="font-bold text-blue-600 mt-2 italic">5,000 ج.س / شهر</p>
+                        </div>
+                        <div onclick="setTier('vip', 2, 'نجم VIP')" id="tier-vip" class="tier-card glass-panel p-5 text-center">
+                            <span class="text-2xl">👑</span>
+                            <h4 class="font-black mt-2">نجم VIP</h4>
+                            <p class="text-[10px] text-gray-500">عمولة 2% فقط</p>
+                            <p class="font-bold text-blue-600 mt-2 italic">15,000 ج.س / شهر</p>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-bold mb-2 mr-2">السعر (ج.س)</label>
-                        <input type="number" id="p-price" placeholder="حدد سعرك" class="w-full p-4 glass-panel bg-white/50 border-none outline-none ring-1 ring-blue-100">
-                    </div>
-                    
-                    <div class="relative group">
-                        <label class="w-full h-44 border-2 border-dashed border-blue-400 rounded-[2.5rem] flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition-all">
-                            <div class="text-4xl group-hover:scale-125 transition">📸</div>
-                            <span class="font-black text-blue-600 mt-3">اختر صورة من هاتفك</span>
-                            <input type="file" id="p-file" accept="image/*" class="hidden" onchange="handleFileStatus()">
-                        </label>
-                    </div>
-                    <p id="file-status" class="text-center text-xs font-bold text-green-600"></p>
+                </div>
 
-                    <button onclick="saveAndPublish()" class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-black text-xl shadow-2xl shadow-blue-300 hover:bg-blue-700 active:scale-95 transition">نشر الآن في المتجر 🚀</button>
-                    <button onclick="showSection('all')" class="w-full text-gray-400 font-bold py-2 text-sm">إلغاء والعودة</button>
+                <div class="glass-panel p-8 shadow-2xl">
+                    <h2 class="text-2xl font-black mb-6">📦 إضافة منتج جديد</h2>
+                    <div class="space-y-4">
+                        <input type="text" id="p-name" placeholder="اسم المنتج" class="w-full p-4 glass-panel border-none outline-none ring-1 ring-blue-100">
+                        <div class="flex gap-4">
+                            <input type="number" id="p-price" oninput="calcCommission()" placeholder="السعر" class="w-1/2 p-4 glass-panel border-none outline-none ring-1 ring-blue-100">
+                            <div class="w-1/2 p-4 glass-panel bg-blue-50 flex items-center justify-between">
+                                <span class="text-[10px] font-black opacity-50">صافي ربحك:</span>
+                                <span id="net-profit" class="font-black text-green-600">0</span>
+                            </div>
+                        </div>
+                        <label class="w-full h-32 border-2 border-dashed border-blue-300 rounded-[2rem] flex flex-col items-center justify-center cursor-pointer hover:bg-blue-50 transition">
+                            <span class="text-3xl">📸</span>
+                            <span class="font-black text-blue-600 text-xs mt-2">رفع صورة المنتج</span>
+                            <input type="file" id="p-file" accept="image/*" class="hidden">
+                        </label>
+                        <button onclick="publishProduct()" class="w-full bg-blue-600 text-white py-5 rounded-[2rem] font-black text-xl shadow-2xl">نشر الآن</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -98,30 +86,44 @@
 
     <div class="fixed bottom-6 inset-x-0 mx-auto w-[92%] max-w-lg glass-panel p-3 flex justify-around items-center z-[1000] shadow-2xl">
         <button onclick="showSection('all')" class="flex flex-col items-center"><span>🏠</span><span class="text-[9px] font-bold">الرئيسية</span></button>
-        <button onclick="showSection('vendor')" class="flex flex-col items-center opacity-40"><span>📦</span><span class="text-[9px] font-bold">بيعي</span></button>
-        <button onclick="checkout()" class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl shadow-xl shadow-blue-300 -mt-10 border-4 border-white">🛒</button>
-        <button class="flex flex-col items-center opacity-40"><span>💬</span><span class="text-[9px] font-bold">دردشة</span></button>
-        <button class="flex flex-col items-center opacity-40"><span>👤</span><span class="text-[9px] font-bold">حسابي</span></button>
+        <button onclick="showSection('vendor')" class="w-14 h-14 bg-blue-600 text-white rounded-full flex items-center justify-center text-2xl shadow-xl -mt-10 border-4 border-white">+</button>
+        <button onclick="alert('قريباً: محفظة التاجر')" class="flex flex-col items-center"><span>💰</span><span class="text-[9px] font-bold">أرباحي</span></button>
     </div>
 
     <script>
-        let db = []; // قاعدة البيانات المؤقتة للمنتجات
-        let cart = [];
+        let db = [];
+        let currentTier = { name: 'مبتدئ', commission: 10 };
 
         function showSection(id) {
             document.querySelectorAll('.section-view').forEach(s => s.classList.remove('active'));
-            const target = document.getElementById(`section-${id}`);
-            target.classList.add('active');
+            document.getElementById(`section-${id}`).classList.add('active');
             renderUI();
         }
 
-        function handleFileStatus() {
-            const file = document.getElementById('p-file').files[0];
-            if(file) document.getElementById('file-status').innerText = "✅ جاهز للرفع: " + file.name;
+        // نظام تغيير الباقة وتحديث العمولة
+        function setTier(id, comm, label) {
+            currentTier = { name: label, commission: comm };
+            
+            // تحديث الشكل
+            document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById(`tier-${id}`).classList.add('selected');
+            
+            // تحديث الشارة في الأعلى
+            document.getElementById('user-badge').innerText = `باقة: ${label} (${comm}% عمولة)`;
+            
+            // إعادة الحساب إذا كان هناك سعر مكتوب
+            calcCommission();
         }
 
-        // الوظيفة الأساسية: حفظ المنتج مع الصورة المرفوعة
-        function saveAndPublish() {
+        // حساب الربح الصافي تلقائياً بناءً على العمولة
+        function calcCommission() {
+            const price = document.getElementById('p-price').value || 0;
+            const commissionAmount = (price * currentTier.commission) / 100;
+            const net = price - commissionAmount;
+            document.getElementById('net-profit').innerText = net.toLocaleString() + " ج.س";
+        }
+
+        function publishProduct() {
             const name = document.getElementById('p-name').value;
             const price = document.getElementById('p-price').value;
             const fileInput = document.getElementById('p-file');
@@ -129,78 +131,39 @@
             if (name && price && fileInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const productData = {
+                    db.unshift({
                         id: Date.now(),
                         name: name,
                         price: price,
-                        img: e.target.result // هذا يحفظ الصورة المرفوعة كـ DataURL
-                    };
-                    
-                    // إضافته لقاعدة البيانات
-                    db.unshift(productData);
-                    
-                    // إضافة صورة للستوري
-                    addToStory(productData.img);
-                    
-                    alert("تم نشر منتجك بنجاح في كوستي ماركت!");
-                    
-                    // تفريغ الحقول والعودة للرئيسية
-                    document.getElementById('p-name').value = '';
-                    document.getElementById('p-price').value = '';
-                    document.getElementById('p-file').value = '';
-                    document.getElementById('file-status').innerText = '';
-                    
+                        img: e.target.result,
+                        tier: currentTier.name // تخزين نوع الباقة وقت النشر
+                    });
+                    alert(`تم النشر! عمولة النظام: ${(price * currentTier.commission / 100)} ج.س`);
                     showSection('all');
                 };
                 reader.readAsDataURL(fileInput.files[0]);
             } else {
-                alert("يرجى إكمال البيانات واختيار صورة المنتج أولاً!");
+                alert("اكمل البيانات أولاً");
             }
-        }
-
-        function addToStory(img) {
-            const storyContainer = document.getElementById('story-container');
-            const newStory = `<div class="story-circle animate-bounce"><img src="${img}"></div>`;
-            storyContainer.innerHTML += newStory;
         }
 
         function renderUI() {
             const grid = document.getElementById('grid-all');
-            grid.innerHTML = db.length ? '' : '<div class="col-span-full text-center py-20 opacity-30 font-black italic">لا يوجد معروضات حالياً.. ارفع منتجك الأول الآن!</div>';
+            grid.innerHTML = db.length ? '' : '<div class="col-span-full text-center py-20 opacity-20 font-black">لا توجد معروضات حالياً..</div>';
             
             db.forEach(item => {
                 grid.innerHTML += `
-                    <div class="bento-item glass-panel p-4 flex flex-col group">
-                        <div class="rounded-[2rem] overflow-hidden h-44 mb-3">
+                    <div class="glass-panel p-4 flex flex-col group relative">
+                        <span class="absolute top-2 right-2 bg-white/80 text-[8px] font-bold px-2 py-1 rounded-full z-10">${item.tier}</span>
+                        <div class="rounded-[2rem] overflow-hidden h-40 mb-3">
                             <img src="${item.img}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                         </div>
                         <h4 class="font-black text-sm px-1 truncate">${item.name}</h4>
-                        <div class="mt-4 flex justify-between items-center px-1">
-                            <span class="text-blue-600 font-black text-lg">${parseInt(item.price).toLocaleString()} <small class="text-[8px]">ج.س</small></span>
-                            <button onclick="addToCart(${item.id})" class="bg-blue-50 w-9 h-9 rounded-xl flex items-center justify-center hover:bg-blue-600 hover:text-white transition">🛒</button>
-                        </div>
+                        <p class="text-blue-600 font-black text-lg px-1">${parseInt(item.price).toLocaleString()} <small class="text-[8px]">ج.س</small></p>
                     </div>`;
             });
         }
 
-        function addToCart(id) {
-            const product = db.find(p => p.id === id);
-            cart.push(product);
-            
-            // إشعار وهمي لزيادة الحماس
-            const notif = document.getElementById('notif');
-            document.getElementById('notif-text').innerText = `تمت إضافة ${product.name} للسلة!`;
-            notif.classList.add('show');
-            setTimeout(() => notif.classList.remove('show'), 3000);
-        }
-
-        function checkout() {
-            if(cart.length === 0) return alert("السلة فارغة!");
-            let msg = `أريد شراء ${cart.length} منتجات من كوستي ماركت.`;
-            window.open(`https://wa.me/249123456789?text=${encodeURIComponent(msg)}`);
-        }
-
-        // تشغيل العرض الأولي
         renderUI();
     </script>
 </body>
