@@ -8,7 +8,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Best Bags">
-    <link rel="apple-touch-icon" href="/icons/icon-192x192.png"> <link rel="manifest" href="/manifest.json"> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png"> 
+    <link rel="manifest" href="/manifest.json">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
     <style>
@@ -16,7 +19,6 @@
         body { font-family: 'Cairo', sans-serif; background-color: var(--soft-pink); color: var(--text-dark); overflow-x: hidden; }
         .font-title { font-family: 'Reem Kufi', sans-serif; }
 
-        /* تصميم الاسم 3D */
         .logo-3d {
             font-size: 3rem; font-weight: 900; color: var(--main-pink);
             text-shadow: 1px 1px 0px #ffb6c1, 2px 2px 0px #ffb6c1, 3px 3px 0px #ffb6c1, 4px 4px 15px rgba(0,0,0,0.1);
@@ -24,7 +26,6 @@
         }
         .logo-3d:hover { transform: scale(1.1) rotate(-2deg); text-shadow: 1px 1px 0px var(--gold), 5px 5px 20px rgba(255, 77, 141, 0.3); }
 
-        /* بطاقة المنتج */
         .bag-card {
             background: #fff; border-radius: 2.5rem; padding: 1rem;
             box-shadow: 20px 20px 60px #d9cad0, -20px -20px 60px #ffffff;
@@ -32,7 +33,6 @@
         }
         .bag-card:hover { transform: scale(1.03); border-color: var(--main-pink); }
 
-        /* السلايدر بالسحب */
         .swipe-container {
             display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
             scrollbar-width: none; cursor: grab; border-radius: 2rem;
@@ -41,7 +41,6 @@
         .swipe-item { min-width: 100%; scroll-snap-align: center; height: 400px; }
         .swipe-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* الأزرار الموحدة */
         .btn-primary {
             background: linear-gradient(135deg, var(--main-pink), #ff85a1);
             color: white; font-weight: 900; border-radius: 1.2rem;
@@ -68,7 +67,6 @@
         .login-input:focus { border-color: var(--main-pink); background: #fff; }
         .hidden-admin { display: none; }
 
-        /* تأثيرات النوافذ */
         .modal-animate-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
@@ -106,7 +104,7 @@
 
     <footer class="py-12 text-center text-gray-400 text-sm tracking-widest relative">
         BEST BAGS LUXURY COLLECTION © 2026
-        <div onclick="showLogin()" class="absolute bottom-5 left-1/2 -translate-x-1/2 w-4 h-4 cursor-pointer opacity-0"></div>
+        <div onclick="showLogin()" class="absolute bottom-5 left-1/2 -translate-x-1/2 w-10 h-10 cursor-pointer opacity-0"></div>
     </footer>
 
     <div id="productModal" class="fixed inset-0 z-[200] hidden bg-white overflow-y-auto">
@@ -133,18 +131,60 @@
         </div>
     </div>
 
-    <div id="editModal" class="fixed inset-0 z-[400] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">...</div>
-    <div id="deleteModal" class="fixed inset-0 z-[500] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">...</div>
-    <div id="logoutModal" class="fixed inset-0 z-[600] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">...</div>
-    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">...</div>
+    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center modal-animate-in">
+            <h3 class="font-title text-3xl mb-8">دخول الإدارة</h3>
+            <input type="email" id="admEmail" class="login-input text-center" placeholder="البريد">
+            <input type="password" id="admPass" class="login-input text-center" placeholder="كلمة المرور">
+            <button onclick="handleLogin()" class="btn-primary w-full py-4 mt-4">دخول</button>
+            <button onclick="hideLogin()" class="w-full mt-6 text-gray-400 text-sm underline">إغلاق</button>
+        </div>
+    </div>
+
+    <div id="editModal" class="fixed inset-0 z-[400] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] p-8 shadow-2xl modal-animate-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-title text-3xl text-gray-800">تعديل المنتج ✍️</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-[#ff4d8d] text-2xl font-bold">&times;</button>
+            </div>
+            <input type="hidden" id="editPId">
+            <input type="text" id="editPName" class="login-input font-bold text-gray-800" placeholder="اسم الحقيبة">
+            <input type="number" id="editPPrice" class="login-input font-bold text-[#ff4d8d]" placeholder="السعر">
+            <textarea id="editPDesc" class="login-input h-32 leading-relaxed" placeholder="المواصفات"></textarea>
+            <div class="flex gap-4 mt-6">
+                <button onclick="saveEdit()" id="saveEditBtn" class="flex-1 btn-primary py-4 text-lg">حفظ</button>
+                <button onclick="closeEditModal()" class="flex-1 btn-secondary py-4 text-lg">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deleteModal" class="fixed inset-0 z-[500] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
+            <h3 class="font-title text-2xl text-gray-800 mb-2">تأكيد الحذف</h3>
+            <p class="text-gray-500 mb-8">هل أنتِ متأكدة؟</p>
+            <input type="hidden" id="deletePId">
+            <div class="flex flex-col gap-3">
+                <button onclick="confirmDelete()" id="confirmDeleteBtn" class="w-full btn-primary py-4">نعم، حذف</button>
+                <button onclick="closeDeleteModal()" class="w-full btn-secondary py-4">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="logoutModal" class="fixed inset-0 z-[600] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
+            <h3 class="font-title text-2xl text-gray-800 mb-2">تسجيل الخروج</h3>
+            <div class="flex flex-col gap-3">
+                <button onclick="handleLogout()" class="w-full btn-primary py-4">تأكيد الخروج</button>
+                <button onclick="closeLogoutModal()" class="w-full btn-secondary py-4">إلغاء</button>
+            </div>
+        </div>
+    </div>
 
     <script>
         // (الخطوة 4) تفعيل الـ Service Worker ليعمل الموقع كتطبيق
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                .then(reg => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Failed', err));
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log(err));
             });
         }
 
@@ -153,9 +193,7 @@
         const _client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let productsStore = [];
-        let currentImgs = [];
 
-        // باقي دوال الـ JavaScript الخاصة بك (handleLogin, init, uploadProduct, etc.)
         async function handleLogin() {
             const { error } = await _client.auth.signInWithPassword({
                 email: document.getElementById('admEmail').value,
@@ -164,40 +202,27 @@
             if (error) alert("بيانات خاطئة"); else location.reload();
         }
 
-        function openLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
-        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         async function handleLogout() { await _client.auth.signOut(); location.reload(); }
         function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
         function hideLogin() { document.getElementById('loginModal').style.display = 'none'; }
+        function openLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
 
+        // باقي الوظائف (فتح المنتج، الرفع، التعديل)
         function openModal(id) {
             const p = productsStore.find(x => x.id == id);
-            currentImgs = p.images;
             const gallery = document.getElementById('swipeGallery');
             gallery.innerHTML = p.images.map(img => `<div class="swipe-item"><img src="${img}"></div>`).join('');
             document.getElementById('modalTitle').innerText = p.name;
             document.getElementById('modalPrice').innerText = `${p.price} SDG`;
             document.getElementById('modalDesc').innerText = p.description || "قطعة فنية تضفي لمسة سحرية على إطلالتكِ.";
-            
-            document.getElementById('orderWA').onclick = () => {
-                const msg = `مرحباً Best Bags ✨\n\nأود طلب المنتج التالي:\n👜 الاسم: ${p.name}\n💰 السعر: ${p.price} SDG\n📝 الوصف: ${p.description || 'لا يوجد وصف'}`;
-                window.open(`https://wa.me/249900623733?text=${encodeURIComponent(msg)}`);
-            };
-
-            document.getElementById('shareBtn').onclick = () => {
-                if (navigator.share) {
-                    navigator.share({ title: p.name, text: `شوفي هذي الحقيبة من Best Bags: ${p.name}`, url: window.location.href });
-                }
-            };
-
-            document.getElementById('saveBtn').onclick = async () => {
-                const index = Math.round(gallery.scrollLeft / gallery.clientWidth);
-                const res = await fetch(currentImgs[index]);
-                const b = await res.blob();
-                const l = document.createElement('a'); l.href = URL.createObjectURL(b); l.download = `${p.name}.jpg`; l.click();
-            };
             document.getElementById('productModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            document.getElementById('orderWA').onclick = () => {
+                const msg = `مرحباً Best Bags ✨\nطلب: ${p.name}\nالسعر: ${p.price} SDG`;
+                window.open(`https://wa.me/249900623733?text=${encodeURIComponent(msg)}`);
+            };
         }
 
         function closeModal() { document.getElementById('productModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
@@ -221,7 +246,7 @@
                     images: urls
                 }]);
                 location.reload();
-            } catch (e) { alert("حدث خطأ"); }
+            } catch (e) { alert("خطأ في الرفع"); btn.innerText = "نشر المنتج"; }
         }
 
         async function init() {
@@ -241,14 +266,43 @@
                         <h3 class="font-title text-2xl text-gray-800 mb-2">${p.name}</h3>
                         ${isAdmin ? `
                         <div class="flex gap-4 mt-4" onclick="event.stopPropagation()">
-                            <button onclick="editP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">تعديل ✍️</button>
-                            <button onclick="openDeleteP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">حذف 🗑️</button>
+                            <button onclick="editP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">تعديل</button>
+                            <button onclick="openDeleteP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">حذف</button>
                         </div>
                         ` : ''}
                     </div>
                 </div>
             `).join('');
             if(isAdmin) document.getElementById('adminZone').classList.remove('hidden-admin');
+        }
+
+        function editP(id) {
+            const p = productsStore.find(x => x.id == id);
+            document.getElementById('editPId').value = p.id;
+            document.getElementById('editPName').value = p.name;
+            document.getElementById('editPPrice').value = p.price;
+            document.getElementById('editPDesc').value = p.description || "";
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() { document.getElementById('editModal').style.display = 'none'; }
+        function openDeleteP(id) { document.getElementById('deletePId').value = id; document.getElementById('deleteModal').style.display = 'flex'; }
+        function closeDeleteModal() { document.getElementById('deleteModal').style.display = 'none'; }
+
+        async function saveEdit() {
+            const id = document.getElementById('editPId').value;
+            await _client.from('products').update({
+                name: document.getElementById('editPName').value,
+                price: document.getElementById('editPPrice').value,
+                description: document.getElementById('editPDesc').value
+            }).eq('id', id);
+            location.reload();
+        }
+
+        async function confirmDelete() {
+            const id = document.getElementById('deletePId').value;
+            await _client.from('products').delete().eq('id', id);
+            location.reload();
         }
 
         init();
