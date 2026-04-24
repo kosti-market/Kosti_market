@@ -224,7 +224,12 @@
                     </div>
                     <div class="px-2">
                         <h3 class="font-title text-2xl text-gray-800 mb-2">${p.name}</h3>
-                        ${isAdmin ? `<button onclick="event.stopPropagation(); deleteP('${p.id}')" class="mt-4 text-red-400 text-xs">حذف</button>` : ''}
+                        ${isAdmin ? `
+                        <div class="flex gap-4 mt-4" onclick="event.stopPropagation()">
+                            <button onclick="editP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">تعديل ✍️</button>
+                            <button onclick="deleteP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">حذف 🗑️</button>
+                        </div>
+                        ` : ''}
                     </div>
                 </div>
             `).join('');
@@ -232,7 +237,38 @@
             if(isAdmin) document.getElementById('adminZone').classList.remove('hidden-admin');
         }
 
-        async function deleteP(id) { if(confirm("حذف؟")) { await _client.from('products').delete().eq('id', id); location.reload(); } }
+        async function editP(id) {
+            const p = productsStore.find(x => x.id == id);
+            if(!p) return;
+            
+            const newName = prompt("تعديل اسم المنتج:", p.name);
+            if (newName === null) return;
+            
+            const newPrice = prompt("تعديل السعر:", p.price);
+            if (newPrice === null) return;
+            
+            const newDesc = prompt("تعديل المواصفات:", p.description || "");
+            if (newDesc === null) return;
+
+            try {
+                await _client.from('products').update({
+                    name: newName,
+                    price: newPrice,
+                    description: newDesc
+                }).eq('id', id);
+                location.reload();
+            } catch (e) {
+                alert("حدث خطأ أثناء التعديل");
+            }
+        }
+
+        async function deleteP(id) { 
+            if(confirm("هل أنت متأكد من الحذف؟")) { 
+                await _client.from('products').delete().eq('id', id); 
+                location.reload(); 
+            } 
+        }
+        
         init();
     </script>
 </body>
