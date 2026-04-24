@@ -37,7 +37,7 @@
         .swipe-item { min-width: 100%; scroll-snap-align: center; height: 400px; }
         .swipe-item img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* الأزرار */
+        /* الأزرار الموحدة */
         .btn-primary {
             background: linear-gradient(135deg, var(--main-pink), #ff85a1);
             color: white; font-weight: 900; border-radius: 1.2rem;
@@ -45,9 +45,10 @@
         }
         .btn-secondary {
             border: 2px solid #ffdae9; color: var(--main-pink);
-            font-weight: 700; border-radius: 1.2rem; transition: 0.3s;
+            font-weight: 900; border-radius: 1.2rem; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
         }
-        .btn-secondary:hover { background: #fff0f5; }
+        .btn-secondary:hover { background: #fff0f5; border-color: var(--main-pink); }
 
         .back-btn {
             position: fixed; top: 20px; right: 20px; z-index: 250;
@@ -63,7 +64,7 @@
         .login-input:focus { border-color: var(--main-pink); background: #fff; }
         .hidden-admin { display: none; }
 
-        /* تأثيرات النافذة المنبثقة */
+        /* تأثيرات النوافذ */
         .modal-animate-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popIn {
             0% { opacity: 0; transform: scale(0.8); }
@@ -121,20 +122,10 @@
                     <button id="orderWA" class="btn-primary py-6 text-lg">اطلبِ الآن عبر واتساب</button>
                     <div class="flex gap-4">
                         <button id="shareBtn" class="flex-1 py-4 btn-secondary">مشاركة</button>
-                        <button id="saveBtn" class="flex-1 py-4 btn-secondary">حفظ الصورة</button>
+                        <button id="saveBtn" class="flex-1 py-4 btn-secondary text-[#ff4d8d]">حفظ الصورة</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center modal-animate-in">
-            <h3 class="font-title text-3xl mb-8">دخول الإدارة</h3>
-            <input type="email" id="admEmail" class="login-input text-center" placeholder="البريد">
-            <input type="password" id="admPass" class="login-input text-center" placeholder="كلمة المرور">
-            <button onclick="handleLogin()" class="btn-primary w-full py-4 mt-4">دخول</button>
-            <button onclick="hideLogin()" class="w-full mt-6 text-gray-400 text-sm underline">إغلاق</button>
         </div>
     </div>
 
@@ -160,12 +151,12 @@
 
     <div id="deleteModal" class="fixed inset-0 z-[500] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
-            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🗑️</div>
+            <div class="w-20 h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🗑️</div>
             <h3 class="font-title text-2xl text-gray-800 mb-2">تأكيد الحذف</h3>
-            <p class="text-gray-500 mb-8">هل أنتِ متأكدة من حذف هذا المنتج نهائياً؟</p>
+            <p class="text-gray-500 mb-8">هل أنتِ متأكدة من حذف هذا المنتج؟</p>
             <input type="hidden" id="deletePId">
             <div class="flex flex-col gap-3">
-                <button onclick="confirmDelete()" id="confirmDeleteBtn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-4 rounded-2xl transition shadow-lg shadow-red-100">نعم، حذف المنتج</button>
+                <button onclick="confirmDelete()" id="confirmDeleteBtn" class="w-full btn-primary py-4">نعم، حذف</button>
                 <button onclick="closeDeleteModal()" class="w-full btn-secondary py-4">إلغاء</button>
             </div>
         </div>
@@ -175,11 +166,21 @@
         <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
             <div class="w-20 h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🔐</div>
             <h3 class="font-title text-2xl text-gray-800 mb-2">تسجيل الخروج</h3>
-            <p class="text-gray-500 mb-8">هل تريدين الخروج من وضع الإدارة والعودة لوضع الزبائن؟</p>
+            <p class="text-gray-500 mb-8">هل تريدين الخروج من وضع الإدارة؟</p>
             <div class="flex flex-col gap-3">
                 <button onclick="handleLogout()" class="w-full btn-primary py-4">تأكيد الخروج</button>
                 <button onclick="closeLogoutModal()" class="w-full btn-secondary py-4">البقاء</button>
             </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center modal-animate-in">
+            <h3 class="font-title text-3xl mb-8">دخول الإدارة</h3>
+            <input type="email" id="admEmail" class="login-input text-center" placeholder="البريد">
+            <input type="password" id="admPass" class="login-input text-center" placeholder="كلمة المرور">
+            <button onclick="handleLogin()" class="btn-primary w-full py-4 mt-4">دخول</button>
+            <button onclick="hideLogin()" class="w-full mt-6 text-gray-400 text-sm underline">إغلاق</button>
         </div>
     </div>
 
@@ -199,11 +200,9 @@
             if (error) alert("بيانات خاطئة"); else location.reload();
         }
 
-        /* دوال تسجيل الخروج المحدثة */
         function openLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         async function handleLogout() { await _client.auth.signOut(); location.reload(); }
-
         function showLogin() { document.getElementById('loginModal').style.display = 'flex'; }
         function hideLogin() { document.getElementById('loginModal').style.display = 'none'; }
 
@@ -328,7 +327,7 @@
             try {
                 await _client.from('products').delete().eq('id', id);
                 location.reload();
-            } catch (e) { alert("حدث خطأ"); btn.innerText = "نعم، حذف المنتج"; }
+            } catch (e) { alert("حدث خطأ"); btn.innerText = "نعم، حذف"; }
         }
         
         init();
