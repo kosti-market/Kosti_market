@@ -60,7 +60,15 @@
             padding: 1rem; border-radius: 1rem; margin-bottom: 1rem;
             outline: none; transition: 0.3s;
         }
+        .login-input:focus { border-color: var(--main-pink); background: #fff; }
         .hidden-admin { display: none; }
+
+        /* تأثيرات النافذة المنبثقة للتعديل */
+        .modal-animate-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -121,12 +129,37 @@
     </div>
 
     <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center">
+        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center modal-animate-in">
             <h3 class="font-title text-3xl mb-8">دخول الإدارة</h3>
             <input type="email" id="admEmail" class="login-input text-center" placeholder="البريد">
             <input type="password" id="admPass" class="login-input text-center" placeholder="كلمة المرور">
             <button onclick="handleLogin()" class="btn-primary w-full py-4 mt-4">دخول</button>
             <button onclick="hideLogin()" class="w-full mt-6 text-gray-400 text-sm underline">إغلاق</button>
+        </div>
+    </div>
+
+    <div id="editModal" class="fixed inset-0 z-[400] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] p-8 shadow-2xl modal-animate-in">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-title text-3xl text-gray-800">تعديل المنتج ✍️</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-[#ff4d8d] text-2xl font-bold">&times;</button>
+            </div>
+            
+            <input type="hidden" id="editPId">
+            
+            <label class="block text-sm text-gray-500 mb-1 font-bold">اسم الحقيبة</label>
+            <input type="text" id="editPName" class="login-input font-bold text-gray-800">
+            
+            <label class="block text-sm text-gray-500 mb-1 font-bold mt-2">السعر (SDG)</label>
+            <input type="number" id="editPPrice" class="login-input font-bold text-[#ff4d8d]">
+            
+            <label class="block text-sm text-gray-500 mb-1 font-bold mt-2">المواصفات</label>
+            <textarea id="editPDesc" class="login-input h-32 leading-relaxed"></textarea>
+            
+            <div class="flex gap-4 mt-6">
+                <button onclick="saveEdit()" id="saveEditBtn" class="flex-1 btn-primary py-4 text-lg">حفظ التعديلات</button>
+                <button onclick="closeEditModal()" class="flex-1 btn-secondary py-4 text-lg">إلغاء</button>
+            </div>
         </div>
     </div>
 
@@ -160,20 +193,17 @@
             document.getElementById('modalPrice').innerText = `${p.price} SDG`;
             document.getElementById('modalDesc').innerText = p.description || "قطعة فنية تضفي لمسة سحرية على إطلالتكِ.";
             
-            // الواتساب مع التفاصيل كاملة
             document.getElementById('orderWA').onclick = () => {
                 const msg = `مرحباً Best Bags ✨\n\nأود طلب المنتج التالي:\n👜 الاسم: ${p.name}\n💰 السعر: ${p.price} SDG\n📝 الوصف: ${p.description || 'لا يوجد وصف'}`;
                 window.open(`https://wa.me/249900623733?text=${encodeURIComponent(msg)}`);
             };
 
-            // ميزة المشاركة
             document.getElementById('shareBtn').onclick = () => {
                 if (navigator.share) {
                     navigator.share({ title: p.name, text: `شوفي هذي الحقيبة من Best Bags: ${p.name}`, url: window.location.href });
                 }
             };
 
-            // حفظ الصورة الحالية في السلايدر
             document.getElementById('saveBtn').onclick = async () => {
                 const index = Math.round(gallery.scrollLeft / gallery.clientWidth);
                 const res = await fetch(currentImgs[index]);
@@ -237,19 +267,39 @@
             if(isAdmin) document.getElementById('adminZone').classList.remove('hidden-admin');
         }
 
-        async function editP(id) {
+        /* --- دوال التعديل الجديدة --- */
+        function editP(id) {
             const p = productsStore.find(x => x.id == id);
             if(!p) return;
             
-            const newName = prompt("تعديل اسم المنتج:", p.name);
-            if (newName === null) return;
+            // تعبئة البيانات في النافذة المنبثقة
+            document.getElementById('editPId').value = p.id;
+            document.getElementById('editPName').value = p.name;
+            document.getElementById('editPPrice').value = p.price;
+            document.getElementById('editPDesc').value = p.description || "";
             
-            const newPrice = prompt("تعديل السعر:", p.price);
-            if (newPrice === null) return;
-            
-            const newDesc = prompt("تعديل المواصفات:", p.description || "");
-            if (newDesc === null) return;
+            // إظهار النافذة
+            document.getElementById('editModal').style.display = 'flex';
+        }
 
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        async function saveEdit() {
+            const id = document.getElementById('editPId').value;
+            const newName = document.getElementById('editPName').value;
+            const newPrice = document.getElementById('editPPrice').value;
+            const newDesc = document.getElementById('editPDesc').value;
+            const btn = document.getElementById('saveEditBtn');
+
+            if(!newName || !newPrice) {
+                alert("يرجى إدخال الاسم والسعر");
+                return;
+            }
+
+            btn.innerText = "جاري الحفظ...";
+            
             try {
                 await _client.from('products').update({
                     name: newName,
@@ -259,6 +309,7 @@
                 location.reload();
             } catch (e) {
                 alert("حدث خطأ أثناء التعديل");
+                btn.innerText = "حفظ التعديلات";
             }
         }
 
