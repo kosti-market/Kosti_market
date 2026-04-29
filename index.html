@@ -7,35 +7,45 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Reem+Kufi:wght@700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <style>
         :root { --main-pink: #ff4d8d; --soft-pink: #fff0f5; --gold: #d4af37; --text-dark: #2d2d2d; }
-        body { font-family: 'Cairo', sans-serif; background-color: var(--soft-pink); color: var(--text-dark); overflow-x: hidden; }
+        body { font-family: 'Cairo', sans-serif; background-color: var(--soft-pink); color: var(--text-dark); overflow-x: hidden; scroll-behavior: smooth; }
         .font-title { font-family: 'Reem Kufi', sans-serif; }
 
         /* تصميم الاسم 3D */
         .logo-3d {
-            font-size: 3rem; font-weight: 900; color: var(--main-pink);
+            font-size: 2rem; font-weight: 900; color: var(--main-pink);
             text-shadow: 1px 1px 0px #ffb6c1, 2px 2px 0px #ffb6c1, 3px 3px 0px #ffb6c1, 4px 4px 15px rgba(0,0,0,0.1);
             transition: 0.5s; cursor: pointer; display: inline-block;
         }
+        @media (min-width: 768px) { .logo-3d { font-size: 3rem; } }
         .logo-3d:hover { transform: scale(1.1) rotate(-2deg); text-shadow: 1px 1px 0px var(--gold), 5px 5px 20px rgba(255, 77, 141, 0.3); }
 
-        /* بطاقة المنتج */
+        /* بطاقة المنتج - محسنة لشاشات الجوال (منتجين) */
         .bag-card {
-            background: #fff; border-radius: 2.5rem; padding: 1rem;
-            box-shadow: 20px 20px 60px #d9cad0, -20px -20px 60px #ffffff;
-            transition: 0.4s; border: 2px solid transparent;
+            background: #fff; border-radius: 1.5rem; padding: 0.5rem;
+            box-shadow: 10px 10px 30px #d9cad0, -10px -10px 30px #ffffff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            border: 2px solid transparent; display: flex; flex-direction: column;
         }
-        .bag-card:hover { transform: scale(1.03); border-color: var(--main-pink); }
+        @media (min-width: 768px) {
+            .bag-card { border-radius: 2.5rem; padding: 1rem; box-shadow: 20px 20px 60px #d9cad0, -20px -20px 60px #ffffff; }
+        }
+        .bag-card:hover { transform: translateY(-10px) scale(1.02); border-color: var(--main-pink); }
 
-        /* السلايدر بالسحب */
+        /* السلايدر بالسحب - محسن */
         .swipe-container {
             display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-            scrollbar-width: none; cursor: grab; border-radius: 2rem;
+            scrollbar-width: none; cursor: grab; border-radius: 2rem; scroll-behavior: smooth;
         }
         .swipe-container::-webkit-scrollbar { display: none; }
-        .swipe-item { min-width: 100%; scroll-snap-align: center; height: 400px; }
-        .swipe-item img { width: 100%; height: 100%; object-fit: cover; }
+        .swipe-container:active { cursor: grabbing; }
+        .swipe-item { min-width: 100%; scroll-snap-align: center; height: 300px; }
+        @media (min-width: 768px) { .swipe-item { height: 400px; } }
+        .swipe-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s; }
+        .swipe-item:hover img { transform: scale(1.02); }
 
         /* الأزرار الموحدة */
         .btn-primary {
@@ -44,52 +54,51 @@
             transition: 0.3s; box-shadow: 0 10px 20px rgba(255, 77, 141, 0.2);
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(255, 77, 141, 0.4); }
+        .btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         
         .btn-secondary {
             border: 2px solid #ffdae9; color: var(--main-pink);
             font-weight: 900; border-radius: 1.2rem; transition: 0.3s;
             display: flex; align-items: center; justify-content: center;
         }
-        .btn-secondary:hover { background: #fff0f5; border-color: var(--main-pink); }
+        .btn-secondary:hover { background: #fff0f5; border-color: var(--main-pink); transform: translateY(-2px); }
 
         .back-btn {
             position: fixed; top: 20px; right: 20px; z-index: 250;
             background: var(--main-pink); color: white; padding: 12px 24px;
             border-radius: 1rem; font-weight: bold; box-shadow: 0 10px 20px rgba(255, 77, 141, 0.3);
+            transition: transform 0.3s;
         }
+        .back-btn:hover { transform: translateX(-5px); }
 
         .login-input {
             width: 100%; background: #f8f8f8; border: 2px solid #eee;
             padding: 1rem; border-radius: 1rem; margin-bottom: 1rem;
             outline: none; transition: 0.3s;
         }
-        .login-input:focus { border-color: var(--main-pink); background: #fff; }
+        .login-input:focus { border-color: var(--main-pink); background: #fff; box-shadow: 0 0 15px rgba(255,77,141,0.1); }
         .hidden-admin { display: none !important; }
 
         /* تأثيرات النوافذ */
-        .modal-animate-in { animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .modal-animate-in { animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
         @keyframes popIn {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         /* تأثير التحميل (Spinner) */
         .spinner {
-            border: 3px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+            border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top: 3px solid white;
+            width: 20px; height: 20px; animation: spin 1s linear infinite;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <nav class="fixed top-0 w-full z-[100] px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-md border-b border-pink-100">
-        <div class="logo-3d font-title text-2xl md:text-3xl">Best Bags</div>
+    <nav class="fixed top-0 w-full z-[100] px-4 md:px-6 py-4 flex justify-between items-center bg-white/80 backdrop-blur-md border-b border-pink-100" data-aos="fade-down">
+        <div class="logo-3d font-title">Best Bags</div>
         <div class="flex items-center gap-2 md:gap-4">
             <button id="headerLogoutBtn" onclick="openLogoutModal()" class="hidden-admin btn-secondary p-2 md:px-4 md:py-2 text-sm text-[#ff4d8d]" title="تسجيل خروج من الإدارة">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -98,116 +107,121 @@
                     <line x1="21" y1="12" x2="9" y2="12"></line>
                 </svg>
             </button>
-            <a href="https://wa.me/249900623733" class="btn-primary px-4 py-2 md:px-6 text-sm">تواصلِ معنا</a>
+            <a href="https://wa.me/249900623733" class="btn-primary px-3 py-2 md:px-6 md:py-2 text-xs md:text-sm">تواصلِ معنا</a>
         </div>
     </nav>
 
-    <section class="h-[60vh] flex flex-col justify-center items-center text-center px-6 pt-24 bg-gradient-to-b from-white to-pink-50">
-        <h1 class="font-title text-5xl md:text-7xl text-gray-800 mb-4">أناقتكِ تبدأ من <span class="text-[#ff4d8d]">حقيبتكِ</span></h1>
-        <p class="text-gray-500 text-lg max-w-xl">مجموعة مختارة من الحقائب الجلدية الفاخرة التي تليق بجمالكِ.</p>
+    <section class="h-[50vh] md:h-[60vh] flex flex-col justify-center items-center text-center px-4 pt-24 bg-gradient-to-b from-white to-pink-50">
+        <h1 class="font-title text-4xl md:text-7xl text-gray-800 mb-4" data-aos="zoom-in">أناقتكِ تبدأ من <span class="text-[#ff4d8d]">حقيبتكِ</span></h1>
+        <p class="text-gray-500 text-sm md:text-lg max-w-xl" data-aos="fade-up" data-aos-delay="200">مجموعة مختارة من الحقائب الجلدية الفاخرة التي تليق بجمالكِ، تصفحي بكل حب.</p>
     </section>
 
-    <section id="gallery" class="py-16 max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></section>
+    <section id="gallery" class="py-10 md:py-16 max-w-7xl mx-auto px-3 md:px-6 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-8"></section>
 
     <section id="adminZone" class="hidden-admin py-20 bg-white border-t-4 border-[#ff4d8d]">
-        <div class="max-w-2xl mx-auto p-8 shadow-2xl rounded-[2rem]">
+        <div class="max-w-2xl mx-auto p-6 md:p-8 shadow-2xl rounded-[2rem]" data-aos="fade-up">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="font-title text-3xl text-gray-800">إدارة المتجر</h2>
-                <button onclick="openLogoutModal()" class="px-6 py-3 btn-secondary text-sm hidden md:flex">تسجيل خروج 🔐</button>
+                <h2 class="font-title text-2xl md:text-3xl text-gray-800">إدارة المتجر</h2>
+                <button onclick="openLogoutModal()" class="px-4 py-2 md:px-6 md:py-3 btn-secondary text-xs md:text-sm hidden md:flex">تسجيل خروج 🔐</button>
             </div>
             <input type="text" id="pName" placeholder="اسم الحقيبة" class="login-input">
             <input type="number" id="pPrice" placeholder="السعر" class="login-input">
             <textarea id="pDesc" placeholder="الوصف..." class="login-input h-32"></textarea>
             <input type="file" id="pFiles" multiple class="mb-6 block w-full text-sm">
-            <button onclick="uploadProduct()" id="uploadBtn" class="btn-primary w-full py-5 text-xl">نشر المنتج</button>
+            <button onclick="uploadProduct()" id="uploadBtn" class="btn-primary w-full py-4 md:py-5 text-lg md:text-xl">نشر المنتج</button>
         </div>
     </section>
 
-    <footer class="py-12 text-center text-gray-400 text-sm tracking-widest relative">
-        BEST BAGS LUXURY COLLECTION © 2026
-        <div onclick="showLogin()" class="absolute bottom-5 left-1/2 -translate-x-1/2 w-4 h-4 cursor-pointer opacity-0"></div>
+    <footer class="py-12 text-center text-gray-400 text-xs md:text-sm tracking-widest relative">
+        Best Bags | عالم الأناقة النسائية © 2026
+        <div onclick="showLogin()" class="absolute bottom-5 left-1/2 -translate-x-1/2 w-8 h-8 cursor-pointer opacity-0"></div>
     </footer>
 
     <div id="productModal" class="fixed inset-0 z-[200] hidden bg-white overflow-y-auto">
-        <button onclick="closeModal()" class="back-btn">رجوع للمتجر ➔</button>
-        <div class="max-w-6xl mx-auto min-h-screen flex flex-col lg:flex-row items-center gap-12 p-6 pt-24 lg:pt-0">
-            <div class="w-full lg:w-1/2">
-                <div class="swipe-container shadow-2xl border-4 border-white" id="swipeGallery"></div>
+        <button onclick="closeModal()" class="back-btn text-sm md:text-base">رجوع للمتجر ➔</button>
+        <div class="max-w-6xl mx-auto min-h-screen flex flex-col lg:flex-row items-center gap-6 md:gap-12 p-4 md:p-6 pt-20 lg:pt-0">
+            <div class="w-full lg:w-1/2 modal-animate-in">
+                <div class="swipe-container shadow-2xl border-4 border-white relative" id="swipeGallery"></div>
                 <div class="flex justify-center gap-2 mt-4" id="dotContainer"></div>
-                <p class="text-center text-pink-300 text-xs mt-4 animate-pulse">اسحبي الصورة لمشاهدة المزيد ↔</p>
+                <p class="text-center text-pink-400 text-xs mt-3 animate-pulse">اسحبي الصورة يميناً ويساراً للمزيد ↔</p>
             </div>
-            <div class="w-full lg:w-1/2 space-y-6 text-right">
-                <h2 id="modalTitle" class="font-title text-5xl text-gray-800"></h2>
-                <div class="inline-block bg-pink-100 text-[#ff4d8d] px-6 py-2 rounded-full font-black text-2xl" id="modalPrice"></div>
-                <div class="h-1 w-20 bg-gold rounded-full"></div>
-                <p id="modalDesc" class="text-gray-600 text-xl leading-relaxed bg-pink-50/50 p-6 rounded-3xl"></p>
-                <div class="grid grid-cols-1 gap-4 pt-6">
-                    <button id="orderWA" class="btn-primary py-6 text-lg">اطلبِ الآن عبر واتساب</button>
-                    <div class="flex gap-4">
-                        <button id="shareBtn" class="flex-1 py-4 btn-secondary">مشاركة</button>
-                        <button id="saveBtn" class="flex-1 py-4 btn-secondary text-[#ff4d8d]">حفظ الصورة</button>
+            <div class="w-full lg:w-1/2 space-y-4 md:space-y-6 text-right modal-animate-in" style="animation-delay: 0.1s">
+                <h2 id="modalTitle" class="font-title text-3xl md:text-5xl text-gray-800"></h2>
+                <div class="inline-block bg-pink-100 text-[#ff4d8d] px-4 py-1 md:px-6 md:py-2 rounded-full font-black text-xl md:text-2xl" id="modalPrice"></div>
+                <div class="h-1 w-16 md:w-20 bg-gold rounded-full"></div>
+                <p id="modalDesc" class="text-gray-600 text-sm md:text-xl leading-relaxed bg-pink-50/50 p-4 md:p-6 rounded-2xl md:rounded-3xl"></p>
+                <div class="grid grid-cols-1 gap-3 md:gap-4 pt-4 md:pt-6">
+                    <button id="orderWA" class="btn-primary py-4 md:py-6 text-base md:text-lg">اطلبِ الآن عبر واتساب</button>
+                    <div class="flex gap-3 md:gap-4">
+                        <button id="shareBtn" class="flex-1 py-3 md:py-4 btn-secondary text-sm md:text-base">مشاركة</button>
+                        <button id="saveBtn" class="flex-1 py-3 md:py-4 btn-secondary text-[#ff4d8d] text-sm md:text-base">حفظ الصورة</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="editModal" class="fixed inset-0 z-[400] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-lg rounded-[2.5rem] p-8 shadow-2xl modal-animate-in">
+    <div id="editModal" class="fixed inset-0 z-[400] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-lg rounded-[2rem] p-6 md:p-8 shadow-2xl modal-animate-in">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="font-title text-3xl text-gray-800">تعديل المنتج ✍️</h3>
-                <button onclick="closeEditModal()" class="text-gray-400 hover:text-[#ff4d8d] text-2xl font-bold">&times;</button>
+                <h3 class="font-title text-2xl md:text-3xl text-gray-800">تعديل المنتج ✍️</h3>
+                <button onclick="closeEditModal()" class="text-gray-400 hover:text-[#ff4d8d] text-3xl font-bold">&times;</button>
             </div>
             <input type="hidden" id="editPId">
-            <label class="block text-sm text-gray-500 mb-1 font-bold">اسم الحقيبة</label>
+            <label class="block text-xs md:text-sm text-gray-500 mb-1 font-bold">اسم الحقيبة</label>
             <input type="text" id="editPName" class="login-input font-bold text-gray-800">
-            <label class="block text-sm text-gray-500 mb-1 font-bold mt-2">السعر (SDG)</label>
+            <label class="block text-xs md:text-sm text-gray-500 mb-1 font-bold mt-2">السعر (SDG)</label>
             <input type="number" id="editPPrice" class="login-input font-bold text-[#ff4d8d]">
-            <label class="block text-sm text-gray-500 mb-1 font-bold mt-2">المواصفات</label>
-            <textarea id="editPDesc" class="login-input h-32 leading-relaxed"></textarea>
-            <div class="flex gap-4 mt-6">
-                <button onclick="saveEdit()" id="saveEditBtn" class="flex-1 btn-primary py-4 text-lg">حفظ التعديلات</button>
-                <button onclick="closeEditModal()" class="flex-1 btn-secondary py-4 text-lg">إلغاء</button>
+            <label class="block text-xs md:text-sm text-gray-500 mb-1 font-bold mt-2">المواصفات</label>
+            <textarea id="editPDesc" class="login-input h-24 md:h-32 leading-relaxed"></textarea>
+            <div class="flex gap-3 md:gap-4 mt-6">
+                <button onclick="saveEdit()" id="saveEditBtn" class="flex-1 btn-primary py-3 md:py-4 text-sm md:text-lg">حفظ التعديلات</button>
+                <button onclick="closeEditModal()" class="flex-1 btn-secondary py-3 md:py-4 text-sm md:text-lg">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="deleteModal" class="fixed inset-0 z-[500] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
-            <div class="w-20 h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🗑️</div>
-            <h3 class="font-title text-2xl text-gray-800 mb-2">تأكيد الحذف</h3>
-            <p class="text-gray-500 mb-8">هل أنتِ متأكدة من حذف هذا المنتج؟</p>
+    <div id="deleteModal" class="fixed inset-0 z-[500] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-6 md:p-8 shadow-2xl modal-animate-in text-center">
+            <div class="w-16 h-16 md:w-20 md:h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-3xl md:text-4xl">🗑️</div>
+            <h3 class="font-title text-xl md:text-2xl text-gray-800 mb-2">تأكيد الحذف</h3>
+            <p class="text-gray-500 text-sm md:text-base mb-6 md:mb-8">هل أنتِ متأكدة من حذف هذا المنتج؟</p>
             <input type="hidden" id="deletePId">
-            <div class="flex flex-col gap-3">
-                <button onclick="confirmDelete()" id="confirmDeleteBtn" class="w-full btn-primary py-4">نعم، حذف</button>
-                <button onclick="closeDeleteModal()" class="w-full btn-secondary py-4">إلغاء</button>
+            <div class="flex flex-col gap-2 md:gap-3">
+                <button onclick="confirmDelete()" id="confirmDeleteBtn" class="w-full btn-primary py-3 md:py-4">نعم، حذف</button>
+                <button onclick="closeDeleteModal()" class="w-full btn-secondary py-3 md:py-4">إلغاء</button>
             </div>
         </div>
     </div>
 
-    <div id="logoutModal" class="fixed inset-0 z-[600] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-8 shadow-2xl modal-animate-in text-center">
-            <div class="w-20 h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">🔐</div>
-            <h3 class="font-title text-2xl text-gray-800 mb-2">تسجيل الخروج</h3>
-            <p class="text-gray-500 mb-8">هل تريدين الخروج من وضع الإدارة؟</p>
-            <div class="flex flex-col gap-3">
-                <button onclick="handleLogout()" class="w-full btn-primary py-4">تأكيد الخروج</button>
-                <button onclick="closeLogoutModal()" class="w-full btn-secondary py-4">البقاء</button>
+    <div id="logoutModal" class="fixed inset-0 z-[600] hidden bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-6 md:p-8 shadow-2xl modal-animate-in text-center">
+            <div class="w-16 h-16 md:w-20 md:h-20 bg-pink-50 text-[#ff4d8d] rounded-full flex items-center justify-center mx-auto mb-4 text-3xl md:text-4xl">🔐</div>
+            <h3 class="font-title text-xl md:text-2xl text-gray-800 mb-2">تسجيل الخروج</h3>
+            <p class="text-gray-500 text-sm md:text-base mb-6 md:mb-8">هل تريدين الخروج من وضع الإدارة؟</p>
+            <div class="flex flex-col gap-2 md:gap-3">
+                <button onclick="handleLogout()" class="w-full btn-primary py-3 md:py-4">تأكيد الخروج</button>
+                <button onclick="closeLogoutModal()" class="w-full btn-secondary py-3 md:py-4">البقاء</button>
             </div>
         </div>
     </div>
 
-    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-[2.5rem] p-10 shadow-2xl text-center modal-animate-in">
-            <h3 class="font-title text-3xl mb-8">دخول الإدارة</h3>
-            <input type="email" id="admEmail" class="login-input text-center" placeholder="البريد">
-            <input type="password" id="admPass" class="login-input text-center" placeholder="كلمة المرور">
-            <button id="loginBtn" onclick="handleLogin()" class="btn-primary w-full py-4 mt-4">دخول</button>
-            <button onclick="hideLogin()" class="w-full mt-6 text-gray-400 text-sm underline">إغلاق</button>
+    <div id="loginModal" class="fixed inset-0 z-[300] hidden bg-[#ff4d8d] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-8 md:p-10 shadow-2xl text-center modal-animate-in">
+            <h3 class="font-title text-2xl md:text-3xl mb-6 md:mb-8">دخول الإدارة</h3>
+            <input type="email" id="admEmail" class="login-input text-center text-sm md:text-base" placeholder="البريد">
+            <input type="password" id="admPass" class="login-input text-center text-sm md:text-base" placeholder="كلمة المرور">
+            <button id="loginBtn" onclick="handleLogin()" class="btn-primary w-full py-3 md:py-4 mt-2 md:mt-4">دخول</button>
+            <button onclick="hideLogin()" class="w-full mt-4 md:mt-6 text-gray-400 text-xs md:text-sm underline">إغلاق</button>
         </div>
     </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
+        // تفعيل الإيماءات والحركات
+        AOS.init({ duration: 800, once: true, offset: 50 });
+
         const SUPABASE_URL = 'https://bxbglomvulnzehruubdh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4Ymdsb212dWxuemVocnV1YmRoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY5Mzg5MDYsImV4cCI6MjA5MjUxNDkwNn0.rqIZHvP47QugH9vG0LW8OkkmAVYEzhOwv-VUKJuEqOY';
         const _client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -218,7 +232,6 @@
         async function handleLogin() {
             const btn = document.getElementById('loginBtn');
             const originalText = btn.innerText;
-            // إضافة تأثير التحميل
             btn.innerHTML = '<div class="spinner"></div> جاري الدخول...';
             btn.disabled = true;
 
@@ -229,7 +242,6 @@
             
             if (error) {
                 alert("بيانات خاطئة");
-                // إرجاع الزر لحالته الطبيعية عند الخطأ
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             } else {
@@ -247,7 +259,7 @@
             const p = productsStore.find(x => x.id == id);
             currentImgs = p.images;
             const gallery = document.getElementById('swipeGallery');
-            gallery.innerHTML = p.images.map(img => `<div class="swipe-item"><img src="${img}"></div>`).join('');
+            gallery.innerHTML = p.images.map(img => `<div class="swipe-item"><img src="${img}" alt="${p.name}"></div>`).join('');
             document.getElementById('modalTitle').innerText = p.name;
             document.getElementById('modalPrice').innerText = `${p.price} SDG`;
             document.getElementById('modalDesc').innerText = p.description || "قطعة فنية تضفي لمسة سحرية على إطلالتكِ.";
@@ -264,13 +276,16 @@
             };
 
             document.getElementById('saveBtn').onclick = async () => {
-                const index = Math.round(gallery.scrollLeft / gallery.clientWidth);
+                const index = Math.round(gallery.scrollLeft / gallery.clientWidth) || 0;
                 const res = await fetch(currentImgs[index]);
                 const b = await res.blob();
                 const l = document.createElement('a'); l.href = URL.createObjectURL(b); l.download = `${p.name}.jpg`; l.click();
             };
             document.getElementById('productModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            // إعادة ضبط السكرول ليكون في البداية عند فتح النافذة
+            setTimeout(() => { gallery.scrollLeft = 0; }, 50);
         }
 
         function closeModal() { document.getElementById('productModal').style.display = 'none'; document.body.style.overflow = 'auto'; }
@@ -309,25 +324,27 @@
             const sess = await _client.auth.getSession();
             const isAdmin = sess.data.session;
 
-            grid.innerHTML = productsStore.map(p => `
-                <div class="bag-card group cursor-pointer" onclick="openModal('${p.id}')">
-                    <div class="relative h-80 overflow-hidden rounded-[2rem] mb-6">
-                        <img src="${p.images[0]}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div class="absolute bottom-4 left-4 bg-white/90 px-4 py-2 rounded-full font-bold text-[#ff4d8d] shadow-lg">${p.price} SDG</div>
+            grid.innerHTML = productsStore.map((p, index) => `
+                <div class="bag-card group cursor-pointer" data-aos="fade-up" data-aos-delay="${(index % 4) * 100}" onclick="openModal('${p.id}')">
+                    <div class="relative h-40 md:h-80 overflow-hidden rounded-[1rem] md:rounded-[2rem] mb-3 md:mb-5">
+                        <img src="${p.images[0]}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute bottom-2 left-2 md:bottom-4 md:left-4 bg-white/95 px-2 py-1 md:px-4 md:py-2 rounded-full font-bold text-[#ff4d8d] text-[10px] md:text-sm shadow-lg">${p.price} SDG</div>
                     </div>
-                    <div class="px-2">
-                        <h3 class="font-title text-2xl text-gray-800 mb-2">${p.name}</h3>
+                    <div class="px-1 md:px-3 text-center md:text-right flex flex-col justify-between flex-grow">
+                        <h3 class="font-title text-sm md:text-2xl text-gray-800 mb-1 md:mb-2 truncate" title="${p.name}">${p.name}</h3>
                         ${isAdmin ? `
-                        <div class="flex gap-4 mt-4" onclick="event.stopPropagation()">
-                            <button onclick="editP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">تعديل ✍️</button>
-                            <button onclick="openDeleteP('${p.id}')" class="flex-1 py-4 btn-secondary text-sm">حذف 🗑️</button>
+                        <div class="flex flex-col md:flex-row gap-2 mt-auto pt-2" onclick="event.stopPropagation()">
+                            <button onclick="editP('${p.id}')" class="w-full py-1.5 md:py-3 btn-secondary text-[10px] md:text-sm rounded-lg">تعديل ✍️</button>
+                            <button onclick="openDeleteP('${p.id}')" class="w-full py-1.5 md:py-3 btn-secondary text-[10px] md:text-sm rounded-lg">حذف 🗑️</button>
                         </div>
                         ` : ''}
                     </div>
                 </div>
             `).join('');
             
-            // إظهار لوحة التحكم وأيقونة الهيدر عند دخول الإدارة
+            // تحديث تأثيرات AOS للمنتجات الجديدة
+            setTimeout(() => { AOS.refresh(); }, 200);
+
             if(isAdmin) {
                 document.getElementById('adminZone').classList.remove('hidden-admin');
                 document.getElementById('headerLogoutBtn').classList.remove('hidden-admin');
